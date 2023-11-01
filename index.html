@@ -11,6 +11,7 @@
         font-family: "UniFont";
         src: url(./js/方正像素16.ttf);
     }
+
     .input-wrapper {
         position: relative;
         display: inline-block;
@@ -81,38 +82,34 @@
         <div id="echarts" style="width: 920px;height:680px;" class="mar"></div>
         <div style="float:left;margin-top: 100px;margin-left: 50px;">
             <div style="margin-top: 20px">
-                <!-- <div class="input-wrapper" >
-                    <input type="text" id="M1_m" size="18" placeholder=" " />
-                    <label for="M1">M1_MHz：</label>
-                </div> -->
                 <div class="input-wrapper">
                     <input type="text" id="M1_db" size="18" placeholder=" " />
                     <label for="M1">M1_dB：</label>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M1_i" size="18" placeholder=" " />
-                    <label for="M1">M1_Index：</label>
+                    <label for="M1">开始位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M1_c" size="18" placeholder=" " />
+                    <label for="M1">中心位置</label>
                 </div>
             </div>
             <div style="margin-top: 20px">
-                <!-- <div class="input-wrapper">
-                    <input type="text" id="M2_m" size="18" placeholder=" " />
-                    <label for="M2">M2_MHz：</label>
-                </div> -->
                 <div class="input-wrapper">
                     <input type="text" id="M2_db" size="18" placeholder=" " />
                     <label for="M2">M2_dB：</label>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M2_i" size="18" placeholder=" " />
-                    <label for="M2">M2_Index：</label>
+                    <label for="M2">开始位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M2_c" size="18" placeholder=" " />
+                    <label for="M1">中心位置</label>
                 </div>
             </div>
             <div style="margin-top: 20px">
-                <!-- <div class="input-wrapper">
-                    <input type="text" id="M3_m" size="18" placeholder=" " />
-                    <label for="M3">M3_MHz：</label>
-                </div> -->
                 <div class="input-wrapper">
 
                     <input type="text" id="M3_db" size="18" placeholder=" " />
@@ -121,10 +118,15 @@
                 <div class="input-wrapper">
 
                     <input type="text" id="M3_i" size="18" placeholder=" " />
-                    <label for="M3">M3_Index：</label>
+                    <label for="M3">开始位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M3_c" size="18" placeholder=" " />
+                    <label for="M1">中心位置</label>
                 </div>
             </div>
-            <button type="button" value="生成频谱图" name="生成频谱图" id="test_button" class="button" style="margin-top: 20px">生成频谱图</button>
+            <button type="button" value="生成频谱图" name="生成频谱图" id="test_button" class="button"
+                style="margin-top: 20px">生成频谱图</button>
         </div>
     </div>
 
@@ -188,23 +190,23 @@
         var mark1 = 0;
         var mark2 = 0;
         var mark3 = 0;
-        var starPoint1 = 270
+        var starPoint1 = 0;
         var starPoint2 = 0
         var starPoint3 = 0
-        var centerPint1 = 300;
-        var index2 = 0;
-        var index3 = 0;
+        var centerPint1 = 0;
+        var centerPint2 = 0;
+        var centerPint3 = 0;
         document.getElementById('test_button').addEventListener('click', function () {
             // 使用刚指定的配置项和数据显示图表。
-            mark1 = parseFloat(document.getElementById("M1_db").value) == undefined?0:parseFloat(document.getElementById("M1_db").value);
-            mark2 = parseFloat(document.getElementById("M2_db").value)  == undefined?0:parseFloat(document.getElementById("M2_db").value);
-            mark3 = parseFloat(document.getElementById("M3_db").value)  == undefined?0:parseFloat(document.getElementById("M3_db").value);
-            starPoint1 = parseFloat(document.getElementById("M1_i").value)  == undefined?0:parseFloat(document.getElementById("M1_i").value);
-            starPoint2 = parseFloat(document.getElementById("M2_i").value)  == undefined?0:parseFloat(document.getElementById("M2_i").value);
-            starPoint3 = parseFloat(document.getElementById("M3_i").value)  == undefined?0:parseFloat(document.getElementById("M3_i").value);
-            // index1 = parseFloat(document.getElementById("M1_m").value)  == undefined?0:parseFloat(document.getElementById("M1_m").value).toFixed(2);
-            // index2 = parseFloat(document.getElementById("M2_m").value)  == undefined?0:parseFloat(document.getElementById("M2_m").value).toFixed(2);
-            // index3 = parseFloat(document.getElementById("M3_m").value)  == undefined?0:parseFloat(document.getElementById("M3_m").value).toFixed(2);
+            mark1 = parseFloat(document.getElementById("M1_db").value) == undefined ? 0 : parseFloat(document.getElementById("M1_db").value);
+            mark2 = parseFloat(document.getElementById("M2_db").value) == undefined ? 0 : parseFloat(document.getElementById("M2_db").value);
+            mark3 = parseFloat(document.getElementById("M3_db").value) == undefined ? 0 : parseFloat(document.getElementById("M3_db").value);
+            starPoint1 = parseFloat(document.getElementById("M1_i").value) == undefined ? 0 : parseFloat(document.getElementById("M1_i").value);
+            starPoint2 = parseFloat(document.getElementById("M2_i").value) == undefined ? 0 : parseFloat(document.getElementById("M2_i").value);
+            starPoint3 = parseFloat(document.getElementById("M3_i").value) == undefined ? 0 : parseFloat(document.getElementById("M3_i").value);
+            centerPint1 = parseFloat(document.getElementById("M1_c").value) == undefined ? 0 : parseFloat(document.getElementById("M1_c").value);
+            centerPint2 = parseFloat(document.getElementById("M2_c").value) == undefined ? 0 : parseFloat(document.getElementById("M2_c").value);
+            centerPint3 = parseFloat(document.getElementById("M3_c").value) == undefined ? 0 : parseFloat(document.getElementById("M3_c").value);
             generate();
         }, false);
         generate();
@@ -230,128 +232,149 @@
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
                 if (starPoint1 > 0 && mark1 != 0) {
+                    var dou = centerPint1 - starPoint1
 
                     //底下抖动
                     if (i >= starPoint1 - 5 && i < starPoint1 + 5) {
-                        cleft1 = cleft1 +0.5
+                        cleft1 = cleft1 + 0.5
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft1
                     }
-
                     //上升波形
-                    if (i >= starPoint1 + 5 && i <= starPoint1 + 20) {
-                        left1 = left1 + (mark1 - init) / 15
+                    if (i >= starPoint1 + 5 && i <= centerPint1 - 10) {
+                        left1 = left1 + (mark1 - init) / (centerPint1 - starPoint1 - 5)
                         randNum = generateRandomInteger(init - int_val, init + int_val) + left1
                     }
-
                     //波峰抖动波形
-                    if (i > starPoint1 + 20 && i <= starPoint1 + 25) {
+                    if (i > centerPint1 - 10 && i <= centerPint1 - 5) {
                         randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
                     }
-
-
-
-                    
                     //峰值出现波形
-                    if (i > starPoint1 + 25 && i <= starPoint1 + 35) {
+                    if (i > centerPint1 + -5 && i <= centerPint1 + 5) {
                         randNum = generateRandomInteger(mark1, mark1 + 3)
                     }
-
-
-
-
                     //波峰抖动波形
-                    if (i > starPoint1 + 35 && i <= starPoint1 + 40) {
+                    if (i > centerPint1 + 5 && i <= centerPint1 + 10) {
                         randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
                     }
-
                     //下降波形
-                    if (i > starPoint1 + 40 && i <= starPoint1 + 55) {
-                        right1 = right1 + (mark1 - init) / 15
+                    if (i > centerPint1 + 10 && i <= centerPint1 + 10 + (centerPint1 - starPoint1 - 5)) {
+                        right1 = right1 + (mark1 - init) / (centerPint1 - starPoint1 - 5)
                         randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - right1
                         // if (randNum < -100) {
                         //     randNum = generateRandomInteger(init - int_val, init + int_val)
                         // }
                     }
-
                     //底下抖动
-                    if (i >= starPoint1 + 55 && i < starPoint1 + 65) {
-                        cright1 = cright1 +0.5
+                    if (i >= centerPint1 + 10 + (centerPint1 - starPoint1 - 5) && i < centerPint1 + 20 + (centerPint1 - starPoint1 - 5)) {
+                        cright1 = cright1 + 0.5
                         randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright1)
                     }
 
                 }
 
-
-
+                //生成点2
                 if (starPoint2 > 0 && mark2 != 0) {
-                    //生成点2
+
+                    //底下抖动
                     if (i >= starPoint2 - 5 && i < starPoint2 + 5) {
-                        cleft2 = cleft2+0.5
+                        cleft2 = cleft2 + 0.5
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft2
                     }
-                    if (i >= starPoint2 + 5 && i <= starPoint2 + 20) {
-                        left2 = left2 + (mark2 - init) / 15
+
+                    //上升波形
+                    if (i >= starPoint2 + 5 && i <= centerPint2 - 10) {
+                        left2 = left2 + (mark2 - init) / (centerPint2 - starPoint2 - 5)
                         randNum = generateRandomInteger(init - int_val, init + int_val) + left2
                     }
 
-                    if (i > starPoint2 + 20 && i <= starPoint2 + 25) {
+                    //波峰抖动波形
+                    if (i > centerPint2 - 10 && i <= centerPint2 - 5) {
                         randNum = generateRandomInteger(mark2 - int_val1, mark2 + int_val1)
                     }
-                    if (i > starPoint2 + 25 && i <= starPoint2 + 35) {
+
+
+
+
+                    //峰值出现波形
+                    if (i > centerPint2 + -5 && i <= centerPint2 + 5) {
                         randNum = generateRandomInteger(mark2, mark2 + 3)
                     }
-                    if (i > starPoint2 + 35 && i <= starPoint2 + 40) {
+
+
+
+
+                    //波峰抖动波形
+                    if (i > centerPint2 + 5 && i <= centerPint2 + 10) {
                         randNum = generateRandomInteger(mark2 - int_val1, mark2 + int_val1)
                     }
-                    if (i > starPoint2 + 40 && i <= starPoint2 + 55) {
-                        right2 = right2 + (mark2 - init) / 15
+
+                    //下降波形
+                    if (i > centerPint2 + 10 && i <= centerPint2 + 10 + (centerPint2 - starPoint2 - 5)) {
+                        right2 = right2 + (mark2 - init) / (centerPint2 - starPoint2 - 5)
                         randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - right2
                         // if (randNum < -100) {
                         //     randNum = generateRandomInteger(init - int_val, init + int_val)
                         // }
                     }
-                    if (i >= starPoint2 + 55 && i < starPoint2 + 65) {
-                        cright2 = cright2 +0.5
+
+                    //底下抖动
+                    if (i >= centerPint2 + 10 + (centerPint2 - starPoint2 - 5) && i < centerPint2 + 20 + (centerPint2 - starPoint2 - 5)) {
+                        cright2 = cright2 + 0.5
                         randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright2)
-                        // if (randNum < -100) {
-                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
-                        // }
                     }
+
                 }
+
                 if (starPoint3 > 0 && mark3 != 0) {
-                    //生成点3
+
+                    //底下抖动
                     if (i >= starPoint3 - 5 && i < starPoint3 + 5) {
-                        cleft3 = cleft3+0.5
+                        cleft3 = cleft3 + 0.5
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft3
                     }
-                    if (i >= starPoint3 + 5 && i <= starPoint3 + 20) {
-                        left3 = left3 + (mark3 - init) / 15
+
+                    //上升波形
+                    if (i >= starPoint3 + 5 && i <= centerPint3 - 10) {
+                        left3 = left3 + (mark3 - init) / (centerPint3 - starPoint3 - 5)
                         randNum = generateRandomInteger(init - int_val, init + int_val) + left3
                     }
 
-                    if (i > starPoint3 + 20 && i <= starPoint3 + 25) {
+                    //波峰抖动波形
+                    if (i > centerPint3 - 10 && i <= centerPint3 - 5) {
                         randNum = generateRandomInteger(mark3 - int_val1, mark3 + int_val1)
                     }
-                    if (i > starPoint3 + 25 && i <= starPoint3 + 35) {
+
+
+
+
+                    //峰值出现波形
+                    if (i > centerPint3 + -5 && i <= centerPint3 + 5) {
                         randNum = generateRandomInteger(mark3, mark3 + 3)
                     }
-                    if (i > starPoint3 + 35 && i <= starPoint3 + 40) {
+
+
+
+
+                    //波峰抖动波形
+                    if (i > centerPint3 + 5 && i <= centerPint3 + 10) {
                         randNum = generateRandomInteger(mark3 - int_val1, mark3 + int_val1)
                     }
-                    if (i > starPoint3 + 40 && i <= starPoint3 + 55) {
-                        right3 = right3 + (mark3 - init) / 15
+
+                    //下降波形
+                    if (i > centerPint3 + 10 && i <= centerPint3 + 10 + (centerPint3 - starPoint3 - 5)) {
+                        right3 = right3 + (mark3 - init) / (centerPint3 - starPoint3 - 5)
                         randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - right3
                         // if (randNum < -100) {
                         //     randNum = generateRandomInteger(init - int_val, init + int_val)
                         // }
                     }
-                    if (i >= starPoint3 + 55 && i < starPoint3 + 65) {
-                        cright3 = cright3+0.5
+
+                    //底下抖动
+                    if (i >= centerPint3 + 10 + (centerPint3 - starPoint3 - 5) && i < centerPint3 + 20 + (centerPint3 - starPoint3 - 5)) {
+                        cright3 = cright3 + 0.5
                         randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright3)
-                        // if (randNum < -100) {
-                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
-                        // }
                     }
+
                 }
 
 
