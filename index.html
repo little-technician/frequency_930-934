@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>频谱图</title>
+    <script src="js/echarts.min.js"></script>
+</head>
+<style>
+    @font-face {
+        font-family: "UniFont";
+        src: url(./js/方正像素16.ttf);
+    }
+    .input-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .input-wrapper input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .input-wrapper input:focus {
+        outline: none;
+        border-color: #6c63ff;
+        box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
+    }
+
+    .input-wrapper label {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #777;
+        pointer-events: none;
+        transition: 0.2s;
+    }
+
+    .input-wrapper input:focus+label,
+    .input-wrapper input:not(:placeholder-shown)+label {
+        top: 5px;
+        font-size: 12px;
+        color: #6c63ff;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #6c63ff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .button:hover {
+        background-color: #5249e6;
+    }
+
+    .button:active {
+        background-color: #3c33b3;
+    }
+
+    .button:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
+    }
+</style>
+
+
+<body>
+    <div style="display: flex;">
+        <div id="echarts" style="width: 920px;height:680px;" class="mar"></div>
+        <div style="float:left;margin-top: 100px;margin-left: 50px;">
+            <div style="margin-top: 20px">
+                <!-- <div class="input-wrapper" >
+                    <input type="text" id="M1_m" size="18" placeholder=" " />
+                    <label for="M1">M1_MHz：</label>
+                </div> -->
+                <div class="input-wrapper">
+                    <input type="text" id="M1_db" size="18" placeholder=" " />
+                    <label for="M1">M1_dB：</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M1_i" size="18" placeholder=" " />
+                    <label for="M1">M1_Index：</label>
+                </div>
+            </div>
+            <div style="margin-top: 20px">
+                <!-- <div class="input-wrapper">
+                    <input type="text" id="M2_m" size="18" placeholder=" " />
+                    <label for="M2">M2_MHz：</label>
+                </div> -->
+                <div class="input-wrapper">
+                    <input type="text" id="M2_db" size="18" placeholder=" " />
+                    <label for="M2">M2_dB：</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M2_i" size="18" placeholder=" " />
+                    <label for="M2">M2_Index：</label>
+                </div>
+            </div>
+            <div style="margin-top: 20px">
+                <!-- <div class="input-wrapper">
+                    <input type="text" id="M3_m" size="18" placeholder=" " />
+                    <label for="M3">M3_MHz：</label>
+                </div> -->
+                <div class="input-wrapper">
+
+                    <input type="text" id="M3_db" size="18" placeholder=" " />
+                    <label for="M3">M3_dB：</label>
+                </div>
+                <div class="input-wrapper">
+
+                    <input type="text" id="M3_i" size="18" placeholder=" " />
+                    <label for="M3">M3_Index：</label>
+                </div>
+            </div>
+            <button type="button" value="生成频谱图" name="生成频谱图" id="test_button" class="button" style="margin-top: 20px">生成频谱图</button>
+        </div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+        //生成正态分布随机数
+        function generateNormalDistribution(mean, standardDeviation) {
+            let u = 0,
+                v = 0;
+            while (u === 0) u = Math.random();
+            while (v === 0) v = Math.random();
+            const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            return mean + z * standardDeviation;
+        }
+        function generateRandomInteger(min, max) {
+            // return Math.floor(Math.random() * (max - min + 1)) + min;
+            // 生成指定范围的随机数
+            const randomNum = Math.random() * (max - min) + min;
+            // 保留两位小数
+            const roundedNum = Math.round(randomNum * 100) / 100;
+            return roundedNum;
+        }
+
+        function getMax(arr, startIndex, endIndex) {
+            var maxNum = arr[startIndex]
+            for (var i = startIndex; i <= endIndex; i++) {
+                if (maxNum <= arr[i]) {
+                    maxNum = arr[i];
+                }
+            }
+
+            return maxNum.toFixed(2);
+        }
+
+        function getMaxIndex(arr, startIndex, endIndex) {
+            var maxNum = startIndex
+            for (var i = startIndex; i <= endIndex; i++) {
+                if (arr[maxNum] <= arr[i]) {
+                    maxNum = i;
+                }
+            }
+
+            return maxNum;
+        }
+        var xy = 600;
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts'));
+
+        var x_data = [];
+        for (var i = 0; i < xy; i++) {
+            x_data.push(930 + i * (4 / xy))
+            if (i == xy - 1) {
+                x_data.push(934 + i * (4 / xy))
+            }
+        }
+
+        //输入的参数
+        var mark1 = 0;
+        var mark2 = 0;
+        var mark3 = 0;
+        var starPoint1 = 270
+        var starPoint2 = 0
+        var starPoint3 = 0
+        var centerPint1 = 300;
+        var index2 = 0;
+        var index3 = 0;
+        document.getElementById('test_button').addEventListener('click', function () {
+            // 使用刚指定的配置项和数据显示图表。
+            mark1 = parseFloat(document.getElementById("M1_db").value) == undefined?0:parseFloat(document.getElementById("M1_db").value);
+            mark2 = parseFloat(document.getElementById("M2_db").value)  == undefined?0:parseFloat(document.getElementById("M2_db").value);
+            mark3 = parseFloat(document.getElementById("M3_db").value)  == undefined?0:parseFloat(document.getElementById("M3_db").value);
+            starPoint1 = parseFloat(document.getElementById("M1_i").value)  == undefined?0:parseFloat(document.getElementById("M1_i").value);
+            starPoint2 = parseFloat(document.getElementById("M2_i").value)  == undefined?0:parseFloat(document.getElementById("M2_i").value);
+            starPoint3 = parseFloat(document.getElementById("M3_i").value)  == undefined?0:parseFloat(document.getElementById("M3_i").value);
+            // index1 = parseFloat(document.getElementById("M1_m").value)  == undefined?0:parseFloat(document.getElementById("M1_m").value).toFixed(2);
+            // index2 = parseFloat(document.getElementById("M2_m").value)  == undefined?0:parseFloat(document.getElementById("M2_m").value).toFixed(2);
+            // index3 = parseFloat(document.getElementById("M3_m").value)  == undefined?0:parseFloat(document.getElementById("M3_m").value).toFixed(2);
+            generate();
+        }, false);
+        generate();
+
+        function generate() {
+            var y_data = [];
+            var init = -105;
+            var int_val = 1.5;
+            var int_val1 = 0.5;
+            var left1 = 0;
+            var left2 = 0;
+            var left3 = 0;
+            var right1 = 0;
+            var right2 = 0;
+            var right3 = 0;
+            var cleft1 = 0;
+            var cright1 = 0;
+            var cleft2 = 0;
+            var cright2 = 0;
+            var cleft3 = 0;
+            var cright3 = 0;
+            for (var i = 0; i < xy; i++) {
+                var randNum = generateRandomInteger(init - int_val, init + int_val)
+                //生成点1
+                if (starPoint1 > 0 && mark1 != 0) {
+
+                    //底下抖动
+                    if (i >= starPoint1 - 5 && i < starPoint1 + 5) {
+                        cleft1 = cleft1 +0.5
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft1
+                    }
+
+                    //上升波形
+                    if (i >= starPoint1 + 5 && i <= starPoint1 + 20) {
+                        left1 = left1 + (mark1 - init) / 15
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + left1
+                    }
+
+                    //波峰抖动波形
+                    if (i > starPoint1 + 20 && i <= starPoint1 + 25) {
+                        randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
+                    }
+
+
+
+                    
+                    //峰值出现波形
+                    if (i > starPoint1 + 25 && i <= starPoint1 + 35) {
+                        randNum = generateRandomInteger(mark1, mark1 + 3)
+                    }
+
+
+
+
+                    //波峰抖动波形
+                    if (i > starPoint1 + 35 && i <= starPoint1 + 40) {
+                        randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
+                    }
+
+                    //下降波形
+                    if (i > starPoint1 + 40 && i <= starPoint1 + 55) {
+                        right1 = right1 + (mark1 - init) / 15
+                        randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - right1
+                        // if (randNum < -100) {
+                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
+                        // }
+                    }
+
+                    //底下抖动
+                    if (i >= starPoint1 + 55 && i < starPoint1 + 65) {
+                        cright1 = cright1 +0.5
+                        randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright1)
+                    }
+
+                }
+
+
+
+                if (starPoint2 > 0 && mark2 != 0) {
+                    //生成点2
+                    if (i >= starPoint2 - 5 && i < starPoint2 + 5) {
+                        cleft2 = cleft2+0.5
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft2
+                    }
+                    if (i >= starPoint2 + 5 && i <= starPoint2 + 20) {
+                        left2 = left2 + (mark2 - init) / 15
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + left2
+                    }
+
+                    if (i > starPoint2 + 20 && i <= starPoint2 + 25) {
+                        randNum = generateRandomInteger(mark2 - int_val1, mark2 + int_val1)
+                    }
+                    if (i > starPoint2 + 25 && i <= starPoint2 + 35) {
+                        randNum = generateRandomInteger(mark2, mark2 + 3)
+                    }
+                    if (i > starPoint2 + 35 && i <= starPoint2 + 40) {
+                        randNum = generateRandomInteger(mark2 - int_val1, mark2 + int_val1)
+                    }
+                    if (i > starPoint2 + 40 && i <= starPoint2 + 55) {
+                        right2 = right2 + (mark2 - init) / 15
+                        randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - right2
+                        // if (randNum < -100) {
+                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
+                        // }
+                    }
+                    if (i >= starPoint2 + 55 && i < starPoint2 + 65) {
+                        cright2 = cright2 +0.5
+                        randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright2)
+                        // if (randNum < -100) {
+                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
+                        // }
+                    }
+                }
+                if (starPoint3 > 0 && mark3 != 0) {
+                    //生成点3
+                    if (i >= starPoint3 - 5 && i < starPoint3 + 5) {
+                        cleft3 = cleft3+0.5
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft3
+                    }
+                    if (i >= starPoint3 + 5 && i <= starPoint3 + 20) {
+                        left3 = left3 + (mark3 - init) / 15
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + left3
+                    }
+
+                    if (i > starPoint3 + 20 && i <= starPoint3 + 25) {
+                        randNum = generateRandomInteger(mark3 - int_val1, mark3 + int_val1)
+                    }
+                    if (i > starPoint3 + 25 && i <= starPoint3 + 35) {
+                        randNum = generateRandomInteger(mark3, mark3 + 3)
+                    }
+                    if (i > starPoint3 + 35 && i <= starPoint3 + 40) {
+                        randNum = generateRandomInteger(mark3 - int_val1, mark3 + int_val1)
+                    }
+                    if (i > starPoint3 + 40 && i <= starPoint3 + 55) {
+                        right3 = right3 + (mark3 - init) / 15
+                        randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - right3
+                        // if (randNum < -100) {
+                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
+                        // }
+                    }
+                    if (i >= starPoint3 + 55 && i < starPoint3 + 65) {
+                        cright3 = cright3+0.5
+                        randNum = generateRandomInteger(init + 5 - int_val, init + 5 + int_val) - (cright3)
+                        // if (randNum < -100) {
+                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
+                        // }
+                    }
+                }
+
+
+                y_data.push(randNum);
+            }
+            option = {
+                //             x：直角坐标系内绘图网格与左侧距离，数值单位 px，支持百分比（字符串），如：50%
+                //             x2：直角坐标系内绘图网格与右侧距离，数值单位 px，支持百分比（字符串），如：50%
+                //             y：直角坐标系内绘图网格与顶部距离，数值单位 px，支持百分比（字符串），如：50%
+                //              y2：直角坐标系内绘图网格与底部距离，数值单位 px，支持百分比（字符串），如：50%
+                grid: {
+                    x: 65,
+                    y: 40,
+                    x2: 5,
+                    y2: 50
+                },
+                title: [
+                    {
+                        top: "14",
+                        left: '0',
+                        text: 'Ref:-20.00dBm',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "14",
+                        left: '300',
+                        text: '#Att:0dB',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "40",
+                        text: 'Log\n10\ndB/',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "195",
+                        text: 'LgAv',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "258",
+                        text: '1M\tP',
+                        textStyle: {
+                            //文字颜色
+                            color: '#F0E68C',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "280",
+                        text: '2S\tP',
+                        textStyle: {
+                            //文字颜色
+                            color: '#228B22',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "302",
+                        text: '3S\tP',
+                        textStyle: {
+                            //文字颜色
+                            color: '#E0FFFF',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "324",
+                        text: '4S\tP',
+                        textStyle: {
+                            //文字颜色
+                            color: '#00BFFF',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "365",
+                        text: 'FC',
+                        left: '18',
+                        textStyle: {
+                            //文字颜色
+                            color: '#FFFFFF',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        top: "500",
+                        text: 'ETrg\nFFT',
+                        left: '2',
+                        textStyle: {
+                            //文字颜色
+                            color: '#FFFFFF',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        }
+                    },
+                    {
+                        text: 'Start:930.000000 MHz',
+                        bottom: '20',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+
+                        },
+                    },
+                    {
+                        text: 'Stop:934.000000 MHz',
+                        bottom: '20',
+                        left: '690',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+
+                        },
+                    },
+                    {
+                        text: '#Res BW:1.000 kHz',
+                        bottom: '0',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        },
+                    },
+                    {
+                        text: '#VBW:3.000 kHz',
+                        left: 'center',
+                        bottom: '0',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        },
+                    },
+                    {
+                        text: 'Sweep:617.31 ms\t\t\t\t\t\t\t ',
+                        left: '690',
+                        bottom: '0',
+                        textStyle: {
+                            //文字颜色
+                            color: '#ffffff',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 23
+                        },
+                    },
+                    //画y轴刻度
+                    {
+                        top: "77",
+                        left: '60',
+                        text: '-30.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "135",
+                        left: '60',
+                        text: '-40.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "194",
+                        left: '60',
+                        text: '-50.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "253",
+                        left: '60',
+                        text: '-60.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "313",
+                        left: '60',
+                        text: '-70.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "371",
+                        left: '60',
+                        text: '-80.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "429",
+                        left: '60',
+                        text: '-90.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "489",
+                        left: '60',
+                        text: '-100.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "549",
+                        left: '60',
+                        text: '-110.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                    {
+                        top: "608",
+                        left: '60',
+                        text: '-120.00',
+                        textStyle: {
+                            //文字颜色
+                            color: '#C0C0C0',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle: 'normal',
+                            //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                            fontWeight: 'normal',
+                            //字体系列
+                            fontFamily: 'UniFont',
+                            fontSize: 18
+                        }
+                    },
+                ],
+                backgroundColor: '#000000',
+                xAxis: {
+                    type: 'category',
+                    axisLabel: {
+                        interval: xy / 10 //x轴数据距离x轴的距离
+                        , show: false
+                    },
+                    data: x_data,
+                    splitLine: {
+                        show: true, //让网格显示
+                        lineStyle: {//网格样式
+                            color: ['#FFFFFF'], //网格的颜色
+                            width: 1, //网格的宽度
+                            type: 'solid' //网格是实实线，可以修改成虚线以及其他的类型
+                        }
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    min: -120,
+                    max: -20,
+                    interval: 10,
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: ['#FFFFFF'],
+                            width: 1,
+                            type: 'solid'
+                        }
+                    },
+                    axisLabel: {
+                        show: false,
+                        color: '#ffffff',
+                        // inside: true,
+                    }
+                },
+                series: [
+                    {
+                        data: y_data,
+                        type: 'line',
+                        color: '#ffffff', //改变折线点的颜色
+                        lineStyle: {
+                            color: '#F0E68C' //改变折线颜色
+                        },
+                        markPoint: {
+                            data: [
+                                {
+                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)], '' + y_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)]],
+                                    value: '1',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#ffffff',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#ffffff' }
+                                },
+                                {
+                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)], '' + y_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)]],
+                                    value: '2',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#ffffff',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#ffffff' }
+                                },
+                                {
+                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)], '' + y_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)]],
+                                    value: '3',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#ffffff',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#ffffff' }
+                                },
+                            ],
+                        },
+                    }
+                ]
+            };
+            //判断显示几个峰值
+            if (starPoint1 > 0 && mark1 != 0) {
+                var title_m = {
+                    top: '-6',
+                    right: '200',
+                    text: 'M1:' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '-5',
+                    right: '0',
+                    text: getMax(y_data, starPoint1 - 5, starPoint1 + 65) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option.title.push(title_m)
+                option.title.push(title_db)
+            }
+            if (starPoint2 > 0 && mark2 != 0) {
+                var title_m = {
+                    top: '14',
+                    right: '200',
+                    text: 'M2:' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '14',
+                    right: '0',
+                    text: getMax(y_data, starPoint2 - 5, starPoint2 + 65) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option.title.push(title_m)
+                option.title.push(title_db)
+            }
+            if (starPoint3 > 0 && mark3 != 0) {
+                var title_m = {
+                    top: '32',
+                    right: '200',
+                    text: 'M3:' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '32',
+                    right: '0',
+                    text: getMax(y_data, starPoint3 - 5, starPoint3 + 65) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option.title.push(title_m)
+                option.title.push(title_db)
+            }
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>
