@@ -231,9 +231,9 @@
         var x_data = [];
         for (var i = 0; i < xy; i++) {
             x_data.push(930 + i * (4 / xy))
-            if (i == xy - 1) {
-                x_data.push(934 + i * (4 / xy))
-            }
+            // if (i == xy - 1) {
+            //     x_data.push(934 + i * (4 / xy))
+            // }
         }
 
         //输入的参数
@@ -281,7 +281,7 @@
             for (var i = 0; i < xy; i++) {
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
-                if (starPoint1 > 0 && mark1 != 0) {
+                if (starPoint1 >= 0 && mark1 != 0) {
                     var dou1 = (centerPint1 - starPoint1) * 0.25
                     var dou2 = (centerPint1 - starPoint1) * 0.5
                     var dou3 = (centerPint1 - starPoint1) * 0.15
@@ -294,19 +294,19 @@
                         left1 = cleft1 - 5
                     }
                     //上升波形
-                    if (i >= starPoint1 + dou1 && i <= starPoint1 + dou1 + dou2) {
+                    if (i >= starPoint1 + dou1 && i < starPoint1 + dou1 + dou2) {
                         left1 = left1 + (mark1 - init) * 0.625 / dou2
                         randNum = generateRandomInteger(init - int_val, init + int_val) + left1
                     }
                     //上升波峰抖动波形
-                    if (i > starPoint1 + dou1 + dou2 && i <= starPoint1 + dou1 + dou2 + dou3) {
+                    if (i >= starPoint1 + dou1 + dou2 && i < starPoint1 + dou1 + dou2 + dou3) {
                         randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
                         if(document.getElementById("mySelect1").value === "s1"){
                             randNum = generateRandomInteger(mark1 - int_val1, mark1 + 3)
                         }
                     }
                     //峰值出现波形
-                    if (i > starPoint1 + dou1 + dou2 + dou3 && i <= starPoint1 + dou1 + dou2 + dou3 + dou4 * 2) {
+                    if (i >= starPoint1 + dou1 + dou2 + dou3 && i <= starPoint1 + dou1 + dou2 + dou3 + dou4 * 2) {
                         randNum = generateRandomInteger(mark1 - int_val1, mark1 + int_val1)
                         if(document.getElementById("mySelect1").value === "s2"){
                             randNum = generateRandomInteger(mark1 - int_val1, mark1 + 3)
@@ -332,14 +332,14 @@
                         cright1 = right1 - 5
                     }
                     //底下抖动
-                    if (i > starPoint1 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i < starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
+                    if (i > starPoint1 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
                         cright1 = cright1 + (mark1 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - cright1
                     }
                 }
 
                 //生成点2
-                if (starPoint2 > 0 && mark2 != 0) {
+                if (starPoint2 >= 0 && mark2 != 0) {
                     var dou1 = (centerPint2 - starPoint2) * 0.25
                     var dou2 = (centerPint2 - starPoint2) * 0.5
                     var dou3 = (centerPint2 - starPoint2) * 0.15
@@ -397,7 +397,7 @@
                 }
 
                 //生成点3
-                if (starPoint3 > 0 && mark3 != 0) {
+                if (starPoint3 >= 0 && mark3 != 0) {
                     var dou1 = (centerPint3 - starPoint3) * 0.25
                     var dou2 = (centerPint3 - starPoint3) * 0.5
                     var dou3 = (centerPint3 - starPoint3) * 0.15
@@ -869,13 +869,14 @@
                 xAxis: {
                     type: 'category',
                     axisLabel: {
-                        interval: xy / 10 //x轴数据距离x轴的距离
-                        , show: false
+                        interval: 59 //x轴数据距离x轴的距离
+                        ,show: false
                     },
                     data: x_data,
                     splitLine: {
                         show: true, //让网格显示
-                        lineStyle: {//网格样式
+                        lineStyle: {
+                            //网格样式
                             color: ['#FFFFFF'], //网格的颜色
                             width: 1, //网格的宽度
                             type: 'solid' //网格是实实线，可以修改成虚线以及其他的类型
