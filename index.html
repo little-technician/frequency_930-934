@@ -265,30 +265,48 @@
             var y_data = [];
             var init = -105;
             var int_val = 1.5;
-            var int_val1 = 0.5;
+            var int_val1 = 0.8;
             var left1 = 0;
             var left2 = 0;
             var left3 = 0;
             var right1 = 0;
             var right2 = 0;
             var right3 = 0;
+            var iniup1 = 0;
+            var inidown1 = 0;
+            var iniup2 = 0;
+            var inidown2 = 0;
+            var iniup3 = 0;
+            var inidown3 = 0;
             var cleft1 = 0;
             var cright1 = 0;
             var cleft2 = 0;
             var cright2 = 0;
             var cleft3 = 0;
             var cright3 = 0;
+            int topNum = 5
             for (var i = 0; i < xy; i++) {
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
                 if (starPoint1 >= 0 && mark1 != 0) {
                     var dou1 = (centerPint1 - starPoint1) * 0.25
-                    var dou2 = (centerPint1 - starPoint1) * 0.5
-                    var dou3 = (centerPint1 - starPoint1) * 0.15
-                    var dou4 = (centerPint1 - starPoint1) * 0.1
+                    var dou2 = (centerPint1 - starPoint1) * 0.25
+                    // var dou3 = (centerPint1 - starPoint1) * 0.3
+                    // var dou4 = (centerPint1 - starPoint1) * 0.2
+                    //顶部固定200k/30个点
+                    var dou3 = 10
+                    var dou4 = 5
 
                     //上升底下抖动
-                    if (i >= starPoint1 && i < starPoint1 + dou1) {
+                    if(i>= starPoint1 -dou1*2 && i<starPoint1){
+                        iniup1 = iniup1 +0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
+                        if (randNum >=  generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
+                            iniup1 = iniup1 - 0.5
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
+                        }
+                    }
+                    if (i >= starPoint1  && i < starPoint1 + dou1) {
                         cleft1 = cleft1 + (mark1 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft1
                         left1 = cleft1 - 5
@@ -335,6 +353,14 @@
                     if (i > starPoint1 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
                         cright1 = cright1 + (mark1 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - cright1
+                        inidown1 = cright1
+                    }
+                    if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 +dou1*2) {
+                        inidown1 = inidown1 +0.5;
+                        randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - inidown1
+                        if (randNum < init) {
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1
+                        }
                     }
                 }
 
@@ -342,10 +368,18 @@
                 if (starPoint2 >= 0 && mark2 != 0) {
                     var dou1 = (centerPint2 - starPoint2) * 0.25
                     var dou2 = (centerPint2 - starPoint2) * 0.5
-                    var dou3 = (centerPint2 - starPoint2) * 0.15
-                    var dou4 = (centerPint2 - starPoint2) * 0.1
+                    //顶部固定200k/30个点
+                    var dou3 = 10
+                    var dou4 = 5
 
                     //上升底下抖动
+                    if(i>= starPoint2 -dou1*2 && i<starPoint2){
+                        iniup2 = iniup1 +0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                        if ( randNum >=  generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1
+                        }
+                    }
                     if (i >= starPoint2 && i < starPoint2 + dou1) {
                         cleft2 = cleft2 + (mark2 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft2
@@ -393,6 +427,14 @@
                     if (i > starPoint2 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i < starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
                         cright2 = cright2 + (mark2 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - cright2
+                        inidown2 = cright2
+                    }
+                    if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 +dou1*2) {
+                        inidown2 = inidown2 +0.5;
+                        randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - inidown2
+                        if (randNum < -100) {
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1
+                        }
                     }
                 }
 
@@ -400,10 +442,18 @@
                 if (starPoint3 >= 0 && mark3 != 0) {
                     var dou1 = (centerPint3 - starPoint3) * 0.25
                     var dou2 = (centerPint3 - starPoint3) * 0.5
-                    var dou3 = (centerPint3 - starPoint3) * 0.15
-                    var dou4 = (centerPint3 - starPoint3) * 0.1
+                    //顶部固定200k/30个点
+                    var dou3 = 10
+                    var dou4 = 5
 
                     //上升底下抖动
+                    if(i>= starPoint3 -dou1*2 && i<starPoint3){
+                        iniup3 = iniup3 +0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
+                        if ( randNum >=  generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1
+                        }
+                    }
                     if (i >= starPoint3 && i < starPoint3 + dou1) {
                         cleft3 = cleft3 + (mark3 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft3
@@ -451,6 +501,14 @@
                     if (i > starPoint3 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i < starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
                         cright3 = cright3 + (mark3 - init) * 0.33 / dou1
                         randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - cright3
+                        inidown3 = cright3
+                    }
+                    if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 +dou1*2) {
+                        inidown3 = inidown3 +0.5;
+                        randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - inidown3
+                        if (randNum < -100) {
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1
+                        }
                     }
                 }
 
