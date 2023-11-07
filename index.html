@@ -428,16 +428,28 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    if (i >= starPoint2 - dou1 * 2 && i < starPoint2) {
-                        iniup2 = iniup2 + 0.5;
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                            randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                    if (i >= starPoint2 - dou1 * 2 && i < starPoint2 ) {
+                        if(starPoint2 <centerPint1+30+60){
+                            iniup2 = iniup2 + 0.5;
+                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                                tmp = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                            }
+                            cleft2 = iniup2;
+                            inidown2.push(tmp);
+                            inidown2Index = inidown2.length;
+                        }else{
+                            iniup2 = iniup2 + 0.5;
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                                randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                            }
+                            cleft2 = iniup2;
+                            inidown2.push(randNum);
+                            inidown2Index = inidown2.length;
                         }
-                        cleft2 = iniup2;
-                        inidown2.push(randNum);
-                        inidown2Index = inidown2.length;
                     }
+
                     //  上升底下抖动
                     if (i >= starPoint2 && i < starPoint2 + dou1) {
                         cleft2 = cleft2 + (mark2 - init) * 0.15 / dou1
@@ -507,14 +519,25 @@
                     var dou3 = 10
                     var dou4 = 5
                     if (i >= starPoint3 - dou1 * 2 && i < starPoint3) {
-                        iniup3 = iniup3 + 0.5;
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                            randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                        if(starPoint3 <centerPint2+30+60){
+                            iniup3 = iniup3 + 0.5;
+                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                                tmp = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                            }
+                            cleft3 = iniup3;
+                            inidown3.push(tmp);
+                            inidown3Index = inidown3.length;
+                        }else{
+                            iniup3 = iniup3 + 0.5;
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                                randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                            }
+                            cleft3 = iniup3;
+                            inidown3.push(randNum);
+                            inidown3Index = inidown3.length;
                         }
-                        cleft3 = iniup3;
-                        inidown3.push(randNum);
-                        inidown3Index = inidown3.length;
                     }
                     //  上升底下抖动
                     if (i >= starPoint3 && i < starPoint3 + dou1) {
