@@ -561,14 +561,14 @@
                     //上升波峰抖动波形
                     if (i >= starPoint3 + dou1 + dou2 && i < starPoint3 + dou1 + dou2 + dou3) {
                         randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect2").value === "s1") {
+                        if (document.getElementById("mySelect3").value === "s1") {
                             randNum = generateRandomInteger(mark3 - int_val1, mark3 + topNum)
                         }
                     }
                     //峰值出现波形
                     if (i >= starPoint3 + dou1 + dou2 + dou3 && i <= starPoint3 + dou1 + dou2 + dou3 + dou4 * 2) {
                         randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect2").value === "s2") {
+                        if (document.getElementById("mySelect3").value === "s2") {
                             randNum = generateRandomInteger(mark3 - int_val1, mark3 + topNum)
                         }
                     }
@@ -576,7 +576,7 @@
                     //下降波峰抖动波形
                     if (i > starPoint3 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint3 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
                         randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect2").value === "s3") {
+                        if (document.getElementById("mySelect3").value === "s3") {
                             randNum = generateRandomInteger(mark3 - int_val1, mark3 + 3)
                         }
                         // right3 = 7
