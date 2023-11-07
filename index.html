@@ -237,13 +237,13 @@
         }
 
         //输入的参数
-        var mark1 = 0;
+        var mark1 = -55;
         var mark2 = 0;
         var mark3 = 0;
-        var starPoint1 = 0;
+        var starPoint1 = 250;
         var starPoint2 = 0
         var starPoint3 = 0
-        var centerPint1 = 0;
+        var centerPint1 = 300;
         var centerPint2 = 0;
         var centerPint3 = 0;
         document.getElementById('test_button').addEventListener('click', function () {
@@ -271,34 +271,42 @@
             var left2 = 0;
             var left3 = 0;
 
-            var right1 = 0;
-            var right2 = 0;
-            var right3 = 0;
-
             var iniup1 = 0;
             var iniup2 = 0;
             var iniup3 = 0;
 
-            var inidown1 = 0;
-            var inidown2 = 0;
-            var inidown3 = 0;
-
             var cleft1 = 0;
-            var cright1 = 0;
-
             var cleft2 = 0;
-            var cright2 = 0;
-
             var cleft3 = 0;
-            var cright3 = 0;
+
+
+
+
+
+            var right1 = [];
+            var right2 = [];
+            var right3 = [];
+
+            var inidown1 = [];
+            var inidown2 = [];
+            var inidown3 = [];
+
+            var cright1 = [];
+            var cright2 = [];
+            var cright3 = [];
+
+            var right1Index = 0;
+            var cright1Index = 0;
+            var inidown1Index = 0;
+
 
             var topNum = 3
             for (var i = 0; i < xy; i++) {
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
                 if (starPoint1 >= 0 && mark1 != 0) {
-                    var dou1 = (centerPint1 - starPoint1) * 0.25
-                    var dou2 = (centerPint1 - starPoint1) * 0.25
+                    var dou1 = (centerPint1 - starPoint1-15) * 0.5
+                    var dou2 = (centerPint1 - starPoint1-15) * 0.5
                     // var dou3 = (centerPint1 - starPoint1) * 0.3
                     // var dou4 = (centerPint1 - starPoint1) * 0.2
                     //顶部固定200k/30个点
@@ -310,18 +318,28 @@
                         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
                             randNum = generateRandomInteger(init - int_val, init) + iniup1 - 0.5
                         }
-                        cleft1 = iniup1 - 3;
+                        cleft1 = iniup1 ;
+                        inidown1.push(randNum);
+                        inidown1Index = inidown1.length;
                     }
                     //  上升底下抖动
                     if (i >= starPoint1 && i < starPoint1 + dou1) {
-                        cleft1 = cleft1 + (mark1 - init) * 0.33 / dou1
+                        cleft1 = cleft1 + (mark1 - init) * 0.15 / dou1
                         randNum = generateRandomInteger(init - int_val, init + int_val) + cleft1
-                        left1 = cleft1 - 5
+                        left1 = cleft1 - 7
+                        cright1.push(randNum);
+                        cright1Index = cright1.length;
+
                     }
                     //上升波形
                     if (i >= starPoint1 + dou1 && i < starPoint1 + dou1 + dou2) {
                         left1 = left1 + (mark1 - init) * 0.625 / dou2
                         randNum = generateRandomInteger(init - int_val, init + int_val) + left1
+                        if(i%2 === 0&& i>starPoint1 + dou1){
+                            randNum = randNum -5
+                        }
+                        right1.push(randNum);
+                        right1Index = right1.length;
                     }
                     //上升波峰抖动波形
                     if (i >= starPoint1 + dou1 + dou2 && i < starPoint1 + dou1 + dou2 + dou3) {
@@ -344,196 +362,24 @@
                         if (document.getElementById("mySelect1").value === "s3") {
                             randNum = generateRandomInteger(mark1 - int_val1, mark1 + 3)
                         }
-                        right1 = 1;
+                        // right1 = 7
                     }
 
                     //下降波形
                     if (i > starPoint1 + dou1 + dou2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        right1 = right1 + (mark1 - init) * 0.625 / dou2
-                        randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - right1
-                        // if (randNum < -100) {
-                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
-                        // }
-                        cright1 = right1 - 5
+                        right1Index = right1Index -1;
+                        randNum = right1[right1Index];
                     }
-                    //底下抖动
+                    // //底下抖动
                     if (i > starPoint1 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        cright1 = cright1 + (mark1 - init) * 0.33 / dou1
-                        randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - cright1
-                        inidown1 = cright1
+                        cright1Index = cright1Index -1;
+                        randNum = cright1[cright1Index];
                     }
                     if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown1 = inidown1 + 0.5;
-                        randNum = generateRandomInteger(mark1 - int_val, mark1 + int_val) - inidown1
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(mark1, mark1 + int_val) - inidown1
-                        }
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(init - int_val, init + int_val)
-                        }
+                        inidown1Index = inidown1Index -1;
+                        randNum = inidown1[inidown1Index]
                     }
                 }
-
-
-                //生成点2
-                if (starPoint2 >= 0 && mark2 != 0) {
-                    var dou1 = (centerPint2 - starPoint2) * 0.25
-                    var dou2 = (centerPint2 - starPoint2) * 0.25
-                    // var dou3 = (centerPint2 - starPoint2) * 0.3
-                    // var dou4 = (centerPint2 - starPoint2) * 0.2
-                    //顶部固定200k/30个点
-                    var dou3 = 10
-                    var dou4 = 5
-                    if (i >= starPoint2 - dou1 * 2 && i < starPoint2) {
-                        iniup2 = iniup2 + 0.5;
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                            randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
-                        }
-                        cleft2 = iniup2 - 3;
-                    }
-                    //  上升底下抖动
-                    if (i >= starPoint2 && i < starPoint2 + dou1) {
-                        cleft2 = cleft2 + (mark2 - init) * 0.33 / dou1
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft2
-                        left2 = cleft2 - 5
-                    }
-                    //上升波形
-                    if (i >= starPoint2 + dou1 && i < starPoint2 + dou1 + dou2) {
-                        left2 = left2 + (mark2 - init) * 0.625 / dou2
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + left2
-                    }
-                    //上升波峰抖动波形
-                    if (i >= starPoint2 + dou1 + dou2 && i < starPoint2 + dou1 + dou2 + dou3) {
-                        randNum = generateRandomInteger(mark2 - int_val1 - 1, mark2)
-                        if (document.getElementById("mySelect2").value === "s1") {
-                            randNum = generateRandomInteger(mark2 - int_val1, mark2 + topNum)
-                        }
-                    }
-                    //峰值出现波形
-                    if (i >= starPoint2 + dou1 + dou2 + dou3 && i <= starPoint2 + dou1 + dou2 + dou3 + dou4 * 2) {
-                        randNum = generateRandomInteger(mark2 - int_val1 - 1, mark2)
-                        if (document.getElementById("mySelect2").value === "s2") {
-                            randNum = generateRandomInteger(mark2 - int_val1, mark2 + topNum)
-                        }
-                    }
-
-                    //下降波峰抖动波形
-                    if (i > starPoint2 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint2 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
-                        randNum = generateRandomInteger(mark2 - int_val1 - 1, mark2)
-                        if (document.getElementById("mySelect2").value === "s3") {
-                            randNum = generateRandomInteger(mark2 - int_val1, mark2 + 3)
-                        }
-                        right2 = 1;
-                    }
-
-                    //下降波形
-                    if (i > starPoint2 + dou1 + dou2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        right2 = right2 + (mark2 - init) * 0.625 / dou2
-                        randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - right2
-                        // if (randNum < -100) {
-                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
-                        // }
-                        cright2 = right2 - 5
-                    }
-                    //底下抖动
-                    if (i > starPoint2 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        cright2 = cright2 + (mark2 - init) * 0.33 / dou1
-                        randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - cright2
-                        inidown2 = cright2
-                    }
-                    if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown2 = inidown2 + 0.5;
-                        randNum = generateRandomInteger(mark2 - int_val, mark2 + int_val) - inidown2
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(mark2, mark2 + int_val) - inidown2
-                        }
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(init - int_val, init + int_val)
-                        }
-                    }
-                }
-
-                //生成点3
-                if (starPoint3 >= 0 && mark3 != 0) {
-                    var dou1 = (centerPint3 - starPoint3) * 0.25
-                    var dou2 = (centerPint3 - starPoint3) * 0.25
-                    // var dou3 = (centerPint3 - starPoint3) * 0.3
-                    // var dou4 = (centerPint3 - starPoint3) * 0.2
-                    //顶部固定200k/30个点
-                    var dou3 = 10
-                    var dou4 = 5
-                    if (i >= starPoint3 - dou1 * 2 && i < starPoint3) {
-                        iniup3 = iniup3 + 0.5;
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                            randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
-                        }
-                        cleft3 = iniup3 - 3;
-                    }
-                    //  上升底下抖动
-                    if (i >= starPoint3 && i < starPoint3 + dou1) {
-                        cleft3 = cleft3 + (mark3 - init) * 0.33 / dou1
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft3
-                        left3 = cleft3 - 5
-                    }
-                    //上升波形
-                    if (i >= starPoint3 + dou1 && i < starPoint3 + dou1 + dou2) {
-                        left3 = left3 + (mark3 - init) * 0.625 / dou2
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + left3
-                    }
-                    //上升波峰抖动波形
-                    if (i >= starPoint3 + dou1 + dou2 && i < starPoint3 + dou1 + dou2 + dou3) {
-                        randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect3").value === "s1") {
-                            randNum = generateRandomInteger(mark3 - int_val1, mark3 + topNum)
-                        }
-                    }
-                    //峰值出现波形
-                    if (i >= starPoint3 + dou1 + dou2 + dou3 && i <= starPoint3 + dou1 + dou2 + dou3 + dou4 * 2) {
-                        randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect3").value === "s2") {
-                            randNum = generateRandomInteger(mark3 - int_val1, mark3 + topNum)
-                        }
-                    }
-
-                    //下降波峰抖动波形
-                    if (i > starPoint3 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint3 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
-                        randNum = generateRandomInteger(mark3 - int_val1 - 1, mark3)
-                        if (document.getElementById("mySelect3").value === "s3") {
-                            randNum = generateRandomInteger(mark3 - int_val1, mark3 + 3)
-                        }
-                        right3 = 1;
-                    }
-
-                    //下降波形
-                    if (i > starPoint3 + dou1 + dou2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        right3 = right3 + (mark3 - init) * 0.625 / dou2
-                        randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - right3
-                        // if (randNum < -100) {
-                        //     randNum = generateRandomInteger(init - int_val, init + int_val)
-                        // }
-                        cright3 = right3 - 5
-                    }
-                    //底下抖动
-                    if (i > starPoint3 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
-                        cright3 = cright3 + (mark3 - init) * 0.33 / dou1
-                        randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - cright3
-                        inidown3 = cright3
-                    }
-                    if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown3 = inidown3 + 0.5;
-                        randNum = generateRandomInteger(mark3 - int_val, mark3 + int_val) - inidown3
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(mark3, mark3 + int_val) - inidown3
-                        }
-                        if (randNum < init) {
-                            randNum = generateRandomInteger(init - int_val, init + int_val)
-                        }
-                    }
-                }
-
-
                 y_data.push(randNum);
             }
             option = {
@@ -987,7 +833,8 @@
                         type: 'line',
                         color: '#ffffff', //改变折线点的颜色
                         lineStyle: {
-                            color: '#F0E68C' //改变折线颜色
+                            color: '#F0E68C', //改变折线颜色
+                            width:1
                         },
                         markPoint: {
                             data: [
