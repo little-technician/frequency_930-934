@@ -112,6 +112,20 @@
         <div style="float:left;margin-top: 100px;margin-left: 50px;">
             <div style="margin-top: 20px">
                 <div class="input-wrapper">
+                    <input type="text" id="init_fr" size="18" placeholder=" " />
+                    <label for="init_fr_label">底噪设置，默认-105</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="StartFrequency" size="18" placeholder=" " />
+                    <label for="StartFrequency_label">开始频率：，默认930</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="StopFrequency" size="18" placeholder=" " />
+                    <label for="StopFrequency_label">结束频率：，默认934</label>
+                </div>
+            </div>
+            <div style="margin-top: 20px">
+                <div class="input-wrapper">
                     <input type="text" id="M1_db" size="18" placeholder=" " />
                     <label for="M1">M1_dB：</label>
                 </div>
@@ -249,18 +263,18 @@
             return maxNum;
         }
         var xy = 600;
+        var x_data = [];
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('echarts'));
 
-        var x_data = [];
+        var StartFrequency = parseFloat(930).toFixed(6);
+        var StopFrequency = parseFloat(934).toFixed(6);
         for (var i = 0; i < xy; i++) {
-            x_data.push(930 + i * (4 / xy))
-            // if (i == xy - 1) {
-            //     x_data.push(934 + i * (4 / xy))
-            // }
+                x_data.push(StartFrequency + i * ((StopFrequency-StartFrequency) / xy))
         }
 
         //输入的参数
+        var init = -105;
         var mark1 = 0;
         var mark2 = 0;
         var mark3 = 0;
@@ -277,7 +291,6 @@
         var M2_updownini = 0;
         var M3_updownini = 0;
         document.getElementById('test_button').addEventListener('click', function () {
-            console.log(parseFloat(document.getElementById("M1_updown").value));
             // 使用刚指定的配置项和数据显示图表。
             mark1 = parseFloat(document.getElementById("M1_db").value) == undefined ? 0 : parseFloat(document.getElementById("M1_db").value);
             mark2 = parseFloat(document.getElementById("M2_db").value) == undefined ? 0 : parseFloat(document.getElementById("M2_db").value);
@@ -294,13 +307,21 @@
             M1_updownini = parseFloat(document.getElementById("M1_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updownini").value)) ? 5 : parseFloat(document.getElementById("M1_updownini").value);
             M2_updownini = parseFloat(document.getElementById("M2_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updownini").value)) ? 5 : parseFloat(document.getElementById("M2_updownini").value);
             M3_updownini = parseFloat(document.getElementById("M3_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updownini").value)) ? 5 : parseFloat(document.getElementById("M3_updownini").value);
+            init =  parseFloat(document.getElementById("init_fr").value) == undefined || isNaN(parseFloat(document.getElementById("init_fr").value)) ? -105 : parseFloat(document.getElementById("init_fr").value);
+            StartFrequency =  parseFloat(document.getElementById("StartFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StartFrequency").value)) ? 930.000000 : parseFloat(document.getElementById("StartFrequency").value).toFixed(6);
+            StopFrequency =  parseFloat(document.getElementById("StopFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StopFrequency").value)) ? 934.000000 : parseFloat(document.getElementById("StopFrequency").value).toFixed(6);
             generate();
         }, false);
         generate();
 
         function generate() {
+            x_data = [];
+            for (var i = 0; i < xy; i++) {
+                x_data.push(parseFloat(StartFrequency) + i * ((parseFloat(StopFrequency)-parseFloat(StartFrequency)) / xy))
+            }
+            console.log(StartFrequency,StopFrequency)
+            console.log(x_data)
             var y_data = [];
-            var init = -105;
             var int_val = 1.5;
             var int_val1 = 3;
             // 上升波形控制数值
@@ -770,7 +791,7 @@
                         }
                     },
                     {
-                        text: 'Start:930.000000 MHz',
+                        text: 'Start:'+StartFrequency+' MHz',
                         bottom: '20',
                         textStyle: {
                             //文字颜色
@@ -786,7 +807,7 @@
                         },
                     },
                     {
-                        text: 'Stop:934.000000 MHz',
+                        text: 'Stop:'+StopFrequency+' MHz',
                         bottom: '20',
                         left: '640',
                         textStyle: {
