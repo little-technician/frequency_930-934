@@ -140,11 +140,11 @@
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M1_updownini" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参数1</label>
+                    <label for="M1">上升下降曲线参数1,默认值为3</label>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M1_updown" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参数2</label>
+                    <label for="M1">上升下降曲线参数2,默认值为3</label>
                 </div>
                 <dvi>
                     <select class="select" id="mySelect1">
@@ -169,11 +169,11 @@
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M2_updownini" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参数1</label>
+                    <label for="M1">上升下降曲线参数1,默认值为3</label>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M2_updown" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参数2</label>
+                    <label for="M1">上升下降曲线参数2,默认值为3</label>
                 </div>
                 <dvi>
                     <select class="select" id="mySelect2">
@@ -200,11 +200,11 @@
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M3_updownini" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参数1</label>
+                    <label for="M1">上升下降曲线参数1,默认值为3</label>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="M3_updown" size="18" placeholder=" " />
-                    <label for="M1">上升下降曲线参2</label>
+                    <label for="M1">上升下降曲线参2,默认值为3</label>
                 </div>
                 <dvi>
                     <select class="select" id="mySelect3">
@@ -286,9 +286,9 @@
         var starPoint1 = 0;
         var starPoint2 = 0
         var starPoint3 = 0
-        var centerPint1 = 0;
-        var centerPint2 = 0;
-        var centerPint3 = 0;
+        var centerPint1 = null;
+        var centerPint2 = null;
+        var centerPint3 = null;
         var M1_updown = 0;
         var M2_updown = 0;
         var M3_updown = 0;
@@ -306,12 +306,12 @@
             centerPint1 = parseFloat(document.getElementById("M1_c").value) == undefined ? 0 : parseFloat(document.getElementById("M1_c").value);
             centerPint2 = parseFloat(document.getElementById("M2_c").value) == undefined ? 0 : parseFloat(document.getElementById("M2_c").value);
             centerPint3 = parseFloat(document.getElementById("M3_c").value) == undefined ? 0 : parseFloat(document.getElementById("M3_c").value);
-            M1_updown = parseFloat(document.getElementById("M1_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updown").value)) ? 5 : parseFloat(document.getElementById("M1_updown").value);
-            M2_updown = parseFloat(document.getElementById("M2_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updown").value)) ? 5 : parseFloat(document.getElementById("M2_updown").value);
-            M3_updown = parseFloat(document.getElementById("M3_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updown").value)) ? 5 : parseFloat(document.getElementById("M3_updown").value);
-            M1_updownini = parseFloat(document.getElementById("M1_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updownini").value)) ? 5 : parseFloat(document.getElementById("M1_updownini").value);
-            M2_updownini = parseFloat(document.getElementById("M2_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updownini").value)) ? 5 : parseFloat(document.getElementById("M2_updownini").value);
-            M3_updownini = parseFloat(document.getElementById("M3_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updownini").value)) ? 5 : parseFloat(document.getElementById("M3_updownini").value);
+            M1_updown = parseFloat(document.getElementById("M1_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updown").value)) ? 3 : parseFloat(document.getElementById("M1_updown").value);
+            M2_updown = parseFloat(document.getElementById("M2_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updown").value)) ? 3 : parseFloat(document.getElementById("M2_updown").value);
+            M3_updown = parseFloat(document.getElementById("M3_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updown").value)) ? 3 : parseFloat(document.getElementById("M3_updown").value);
+            M1_updownini = parseFloat(document.getElementById("M1_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updownini").value)) ? 3 : parseFloat(document.getElementById("M1_updownini").value);
+            M2_updownini = parseFloat(document.getElementById("M2_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updownini").value)) ? 3 : parseFloat(document.getElementById("M2_updownini").value);
+            M3_updownini = parseFloat(document.getElementById("M3_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updownini").value)) ? 3 : parseFloat(document.getElementById("M3_updownini").value);
             init = parseFloat(document.getElementById("init_fr").value) == undefined || isNaN(parseFloat(document.getElementById("init_fr").value)) ? -105 : parseFloat(document.getElementById("init_fr").value);
             StartFrequency = parseFloat(document.getElementById("StartFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StartFrequency").value)) ? 930.000000 : parseFloat(document.getElementById("StartFrequency").value).toFixed(6);
             StopFrequency = parseFloat(document.getElementById("StopFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StopFrequency").value)) ? 934.000000 : parseFloat(document.getElementById("StopFrequency").value).toFixed(6);
@@ -354,7 +354,7 @@
             console.log(StartFrequency, StopFrequency)
             console.log(x_data)
             var y_data = [];
-            var int_val = 1.5;
+            var int_val = 0.75;
             var int_val1 = 3;
             // 上升波形控制数值
             var left1 = 0;
@@ -390,7 +390,7 @@
             var inidown3Index = 0;
 
 
-            var topNum = 3
+            var topNum = 2
             for (var i = 0; i < xy; i++) {
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
@@ -402,16 +402,16 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    if (i >= starPoint1 - dou1 * 2 && i < starPoint1) {
-                        iniup1 = iniup1 + 0.5;
-                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
-                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
-                            randNum = generateRandomInteger(init - int_val, init) + iniup1 - 0.5
-                        }
-                        cleft1 = iniup1;
-                        inidown1.push(randNum);
-                        inidown1Index = inidown1.length;
-                    }
+                    // if (i >= starPoint1 - 5  && i < starPoint1) {
+                    //     iniup1 = iniup1 + 0.5;
+                    //     randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
+                    //     if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
+                    //         randNum = generateRandomInteger(init - int_val, init) + iniup1 - 0.5
+                    //     }
+                    //     cleft1 = iniup1;
+                    //     inidown1.push(randNum);
+                    //     inidown1Index = inidown1.length;
+                    // }
                     //  上升底下抖动
                     if (i >= starPoint1 && i < starPoint1 + dou1) {
                         cleft1 = cleft1 + (mark1 - init) * 0.15 / dou1
@@ -450,7 +450,7 @@
                     if (i > starPoint1 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint1 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
                         randNum = generateRandomInteger(mark1 - int_val1 - 1, mark1)
                         if (document.getElementById("mySelect1").value === "s3") {
-                            randNum = generateRandomInteger(mark1 - int_val1, mark1 + 3)
+                            randNum = generateRandomInteger(mark1 - int_val1, mark1 + topNum)
                         }
                         // right1 = 7
                     }
@@ -465,10 +465,10 @@
                         cright1Index = cright1Index - 1;
                         randNum = cright1[cright1Index];
                     }
-                    if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown1Index = inidown1Index - 1;
-                        randNum = inidown1[inidown1Index]
-                    }
+                    // if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + 5 ) {
+                    //     inidown1Index = inidown1Index - 1;
+                    //     randNum = inidown1[inidown1Index]
+                    // }
                 }
 
 
@@ -481,27 +481,27 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    if (i >= starPoint2 - dou1 * 2 && i < starPoint2) {
-                        if (starPoint2 < centerPint1 + 30 + 60) {
-                            iniup2 = iniup2 + 0.5;
-                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                                tmp = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
-                            }
-                            cleft2 = iniup2;
-                            inidown2.push(tmp);
-                            inidown2Index = inidown2.length;
-                        } else {
-                            iniup2 = iniup2 + 0.5;
-                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                                randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
-                            }
-                            cleft2 = iniup2;
-                            inidown2.push(randNum);
-                            inidown2Index = inidown2.length;
-                        }
-                    }
+                    // if (i >= starPoint2 - dou1 * 2 && i < starPoint2) {
+                    //     if (starPoint2 < centerPint1 + 30 + 60) {
+                    //         iniup2 = iniup2 + 0.5;
+                    //         var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                    //         if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                    //             tmp = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                    //         }
+                    //         cleft2 = iniup2;
+                    //         inidown2.push(tmp);
+                    //         inidown2Index = inidown2.length;
+                    //     } else {
+                    //         iniup2 = iniup2 + 0.5;
+                    //         randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                    //         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                    //             randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                    //         }
+                    //         cleft2 = iniup2;
+                    //         inidown2.push(randNum);
+                    //         inidown2Index = inidown2.length;
+                    //     }
+                    // }
 
                     //  上升底下抖动
                     if (i >= starPoint2 && i < starPoint2 + dou1) {
@@ -556,10 +556,10 @@
                         cright2Index = cright2Index - 1;
                         randNum = cright2[cright2Index];
                     }
-                    if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown2Index = inidown2Index - 1;
-                        randNum = inidown2[inidown2Index]
-                    }
+                    // if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
+                    //     inidown2Index = inidown2Index - 1;
+                    //     randNum = inidown2[inidown2Index]
+                    // }
                 }
 
                 //生成点3
@@ -571,27 +571,27 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    if (i >= starPoint3 - dou1 * 2 && i < starPoint3) {
-                        if (starPoint3 < centerPint2 + 30 + 60) {
-                            iniup3 = iniup3 + 0.5;
-                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                                tmp = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
-                            }
-                            cleft3 = iniup3;
-                            inidown3.push(tmp);
-                            inidown3Index = inidown3.length;
-                        } else {
-                            iniup3 = iniup3 + 0.5;
-                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                                randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
-                            }
-                            cleft3 = iniup3;
-                            inidown3.push(randNum);
-                            inidown3Index = inidown3.length;
-                        }
-                    }
+                    // if (i >= starPoint3 - dou1 * 2 && i < starPoint3) {
+                    //     if (starPoint3 < centerPint2 + 30 + 60) {
+                    //         iniup3 = iniup3 + 0.5;
+                    //         var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                    //         if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                    //             tmp = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                    //         }
+                    //         cleft3 = iniup3;
+                    //         inidown3.push(tmp);
+                    //         inidown3Index = inidown3.length;
+                    //     } else {
+                    //         iniup3 = iniup3 + 0.5;
+                    //         randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                    //         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                    //             randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                    //         }
+                    //         cleft3 = iniup3;
+                    //         inidown3.push(randNum);
+                    //         inidown3Index = inidown3.length;
+                    //     }
+                    // }
                     //  上升底下抖动
                     if (i >= starPoint3 && i < starPoint3 + dou1) {
                         cleft3 = cleft3 + (mark3 - init) * 0.15 / dou1
@@ -645,12 +645,16 @@
                         cright3Index = cright3Index - 1;
                         randNum = cright3[cright3Index];
                     }
-                    if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                        inidown3Index = inidown3Index - 1;
-                        randNum = inidown3[inidown3Index]
-                    }
+                    // if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
+                    //     inidown3Index = inidown3Index - 1;
+                    //     randNum = inidown3[inidown3Index]
+                    // }
+                }
+                if(randNum == undefined){
+                    randNum = generateRandomInteger(init - int_val, init + int_val)
                 }
                 y_data.push(randNum);
+                console.log(y_data)
             }
 
             //正常
@@ -821,7 +825,7 @@
                         }
                     },
                     {
-                        text: 'Start:' + StartFrequency + ' MHz',
+                        text: 'Start:' + parseFloat(StartFrequency).toFixed(6) + ' MHz',
                         bottom: '20',
                         textStyle: {
                             //文字颜色
@@ -837,7 +841,7 @@
                         },
                     },
                     {
-                        text: 'Stop:' + StopFrequency + ' MHz',
+                        text: 'Stop:' + parseFloat(StopFrequency).toFixed(6) + ' MHz',
                         bottom: '20',
                         left: '640',
                         textStyle: {
@@ -1106,12 +1110,12 @@
                         color: '#ffffff', //改变折线点的颜色
                         lineStyle: {
                             color: '#F0E68C', //改变折线颜色
-                            width: 1
+                            width: 2
                         },
                         markPoint: {
                             data: [
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)], '' + y_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)]],
+                                    coord: ['' + x_data[centerPint1], '' + y_data[centerPint1]],
                                     value: '1',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1125,7 +1129,7 @@
                                     itemStyle: { color: '#ffffff' }
                                 },
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)], '' + y_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)]],
+                                    coord: ['' + x_data[centerPint2], '' + y_data[centerPint2]],
                                     value: '2',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1139,7 +1143,7 @@
                                     itemStyle: { color: '#ffffff' }
                                 },
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)], '' + y_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)]],
+                                    coord: ['' + x_data[centerPint3], '' + y_data[centerPint3]],
                                     value: '3',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1158,11 +1162,12 @@
                 ]
             };
             //判断显示几个峰值
-            if (starPoint1 > 0 && mark1 != 0) {
+            if (starPoint1 >= 0 && mark1 != 0) {
                 var title_m = {
                     top: '-6',
                     right: '200',
-                    text: 'M1:' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)].toFixed(2) + ' MHz',
+                    // text: 'M1:' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)].toFixed(2) + ' MHz',
+                    text: 'M1:' + x_data[centerPint1].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1178,7 +1183,8 @@
                 var title_db = {
                     top: '-5',
                     right: '0',
-                    text: getMax(y_data, starPoint1 - 5, starPoint1 + 65) + 'dBm',
+                    // text: getMax(y_data, starPoint1 - 5, starPoint1 + 65) + 'dBm',
+                    text: y_data[centerPint1] + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1194,11 +1200,11 @@
                 option.title.push(title_m)
                 option.title.push(title_db)
             }
-            if (starPoint2 > 0 && mark2 != 0) {
+            if (starPoint2 >= 0 && mark2 != 0) {
                 var title_m = {
                     top: '14',
                     right: '200',
-                    text: 'M2:' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)].toFixed(2) + ' MHz',
+                    text: 'M2:' + x_data[centerPint2].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1214,7 +1220,7 @@
                 var title_db = {
                     top: '14',
                     right: '0',
-                    text: getMax(y_data, starPoint2 - 5, starPoint2 + 65) + 'dBm',
+                    text: y_data[centerPint2] + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1230,11 +1236,11 @@
                 option.title.push(title_m)
                 option.title.push(title_db)
             }
-            if (starPoint3 > 0 && mark3 != 0) {
+            if (starPoint3 >= 0 && mark3 != 0) {
                 var title_m = {
                     top: '32',
                     right: '200',
-                    text: 'M3:' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)].toFixed(2) + ' MHz',
+                    text: 'M3:' + x_data[centerPint3].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1250,7 +1256,7 @@
                 var title_db = {
                     top: '32',
                     right: '0',
-                    text: getMax(y_data, starPoint3 - 5, starPoint3 + 65) + 'dBm',
+                    text: y_data[centerPint3] + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1348,7 +1354,7 @@
                         text: '1M\tP',
                         textStyle: {
                             //文字颜色
-                            color: '#0000FF',
+                            color: '#483db8',
                             //字体风格,'normal','italic','oblique'
                             fontStyle: 'normal',
                             //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
@@ -1436,7 +1442,7 @@
                         }
                     },
                     {
-                        text: 'Start:' + StartFrequency + ' MHz',
+                        text: 'Start:' + parseFloat(StartFrequency).toFixed(6) + ' MHz',
                         bottom: '20',
                         textStyle: {
                             //文字颜色
@@ -1452,7 +1458,7 @@
                         },
                     },
                     {
-                        text: 'Stop:' + StopFrequency + ' MHz',
+                        text: 'Stop:' + parseFloat(StopFrequency).toFixed(6) + ' MHz',
                         bottom: '20',
                         left: '640',
                         textStyle: {
@@ -1720,13 +1726,13 @@
                         type: 'line',
                         color: '#000000', //改变折线点的颜色
                         lineStyle: {
-                            color: '#0000FF', //改变折线颜色
-                            width: 1
+                            color: '#483db8', //改变折线颜色
+                            width: 2
                         },
                         markPoint: {
                             data: [
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)], '' + y_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)]],
+                                    coord: ['' + x_data[centerPint1], '' + y_data[centerPint1]],
                                     value: '1',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1740,7 +1746,7 @@
                                     itemStyle: { color: '#000000' }
                                 },
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)], '' + y_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)]],
+                                    coord: ['' + x_data[centerPint2], '' + y_data[centerPint2]],
                                     value: '2',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1754,7 +1760,7 @@
                                     itemStyle: { color: '#000000' }
                                 },
                                 {
-                                    coord: ['' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)], '' + y_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)]],
+                                    coord: ['' + x_data[centerPint3], '' + y_data[centerPint3]],
                                     value: '3',
                                     symbol: "circle",
                                     symbolSize: 5,
@@ -1773,11 +1779,11 @@
                 ]
             };
             //判断显示几个峰值
-            if (starPoint1 > 0 && mark1 != 0) {
+            if (starPoint1 >= 0 && mark1 != 0) {
                 var title_m = {
                     top: '-6',
                     right: '200',
-                    text: 'M1:' + x_data[getMaxIndex(y_data, starPoint1 - 5, starPoint1 + 65)].toFixed(2) + ' MHz',
+                    text: 'M1:' + x_data[centerPint1].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
@@ -1793,7 +1799,7 @@
                 var title_db = {
                     top: '-5',
                     right: '0',
-                    text: getMax(y_data, starPoint1 - 5, starPoint1 + 65) + 'dBm',
+                    text: y_data[centerPint1] + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
@@ -1809,11 +1815,11 @@
                 option2.title.push(title_m)
                 option2.title.push(title_db)
             }
-            if (starPoint2 > 0 && mark2 != 0) {
+            if (starPoint2 >= 0 && mark2 != 0) {
                 var title_m = {
                     top: '14',
                     right: '200',
-                    text: 'M2:' + x_data[getMaxIndex(y_data, starPoint2 - 5, starPoint2 + 65)].toFixed(2) + ' MHz',
+                    text: 'M2:' + x_data[centerPint2].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
@@ -1829,7 +1835,7 @@
                 var title_db = {
                     top: '14',
                     right: '0',
-                    text: getMax(y_data, starPoint2 - 5, starPoint2 + 65) + 'dBm',
+                    text: y_data[centerPint2]+ 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
@@ -1845,11 +1851,11 @@
                 option2.title.push(title_m)
                 option2.title.push(title_db)
             }
-            if (starPoint3 > 0 && mark3 != 0) {
+            if (starPoint3 >= 0 && mark3 != 0) {
                 var title_m = {
                     top: '32',
                     right: '200',
-                    text: 'M3:' + x_data[getMaxIndex(y_data, starPoint3 - 5, starPoint3 + 65)].toFixed(2) + ' MHz',
+                    text: 'M3:' + x_data[centerPint3].toFixed(2) + ' MHz',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
@@ -1865,7 +1871,7 @@
                 var title_db = {
                     top: '32',
                     right: '0',
-                    text: getMax(y_data, starPoint3 - 5, starPoint3 + 65) + 'dBm',
+                    text: y_data[centerPint3] + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
