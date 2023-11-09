@@ -117,6 +117,10 @@
                     <label for="init_fr_label">底噪设置，默认-105</label>
                 </div>
                 <div class="input-wrapper">
+                    <input type="text" id="init_fr_radom" size="18" placeholder=" " />
+                    <label for="init_fr_radom_label">底噪随机数设置，默认0.75</label>
+                </div>
+                <div class="input-wrapper">
                     <input type="text" id="StartFrequency" size="18" placeholder=" " />
                     <label for="StartFrequency_label">开始频率：，默认930</label>
                 </div>
@@ -280,6 +284,7 @@
 
         //输入的参数
         var init = -105;
+        var init_fr_radom = 0.75;
         var mark1 = 0;
         var mark2 = 0;
         var mark3 = 0;
@@ -316,6 +321,7 @@
             StartFrequency = parseFloat(document.getElementById("StartFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StartFrequency").value)) ? 930.000000 : parseFloat(document.getElementById("StartFrequency").value).toFixed(6);
             StopFrequency = parseFloat(document.getElementById("StopFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StopFrequency").value)) ? 934.000000 : parseFloat(document.getElementById("StopFrequency").value).toFixed(6);
             generate();
+            init_fr_radom = parseFloat(document.getElementById("init_fr_radom").value) == undefined || isNaN(parseFloat(document.getElementById("init_fr_radom").value)) ? 0.75 : parseFloat(document.getElementById("init_fr_radom").value);
         }, false);
         generate();
         document.getElementById('export_button').addEventListener('click', function () {
@@ -354,8 +360,9 @@
             console.log(StartFrequency, StopFrequency)
             console.log(x_data)
             var y_data = [];
-            var int_val = 0.75;
+            var int_val = init_fr_radom;
             var int_val1 = 3;
+            console.log(int_val)
             // 上升波形控制数值
             var left1 = 0;
             var left2 = 0;
@@ -402,16 +409,16 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    // if (i >= starPoint1 - 5  && i < starPoint1) {
-                    //     iniup1 = iniup1 + 0.5;
-                    //     randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
-                    //     if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
-                    //         randNum = generateRandomInteger(init - int_val, init) + iniup1 - 0.5
-                    //     }
-                    //     cleft1 = iniup1;
-                    //     inidown1.push(randNum);
-                    //     inidown1Index = inidown1.length;
-                    // }
+                    if (i >= starPoint1 - 15  && i < starPoint1) {
+                        iniup1 = iniup1 + 0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
+                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
+                            randNum = generateRandomInteger(init - int_val, init) + iniup1 - 0.5
+                        }
+                        cleft1 = iniup1;
+                        inidown1.push(randNum);
+                        inidown1Index = inidown1.length;
+                    }
                     //  上升底下抖动
                     if (i >= starPoint1 && i < starPoint1 + dou1) {
                         cleft1 = cleft1 + (mark1 - init) * 0.15 / dou1
@@ -465,10 +472,10 @@
                         cright1Index = cright1Index - 1;
                         randNum = cright1[cright1Index];
                     }
-                    // if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + 5 ) {
-                    //     inidown1Index = inidown1Index - 1;
-                    //     randNum = inidown1[inidown1Index]
-                    // }
+                    if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + 15 ) {
+                        inidown1Index = inidown1Index - 1;
+                        randNum = inidown1[inidown1Index]
+                    }
                 }
 
 
@@ -481,27 +488,27 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    // if (i >= starPoint2 - dou1 * 2 && i < starPoint2) {
-                    //     if (starPoint2 < centerPint1 + 30 + 60) {
-                    //         iniup2 = iniup2 + 0.5;
-                    //         var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                    //         if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                    //             tmp = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
-                    //         }
-                    //         cleft2 = iniup2;
-                    //         inidown2.push(tmp);
-                    //         inidown2Index = inidown2.length;
-                    //     } else {
-                    //         iniup2 = iniup2 + 0.5;
-                    //         randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
-                    //         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
-                    //             randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
-                    //         }
-                    //         cleft2 = iniup2;
-                    //         inidown2.push(randNum);
-                    //         inidown2Index = inidown2.length;
-                    //     }
-                    // }
+                    if (i >= starPoint2 - 15 && i < starPoint2) {
+                        if (starPoint2 < centerPint1 + 30 + 60) {
+                            iniup2 = iniup2 + 0.5;
+                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                                tmp = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                            }
+                            cleft2 = iniup2;
+                            inidown2.push(tmp);
+                            inidown2Index = inidown2.length;
+                        } else {
+                            iniup2 = iniup2 + 0.5;
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup2
+                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark2 - init) * 0.33 / dou1) {
+                                randNum = generateRandomInteger(init - int_val, init) + iniup2 - 0.5
+                            }
+                            cleft2 = iniup2;
+                            inidown2.push(randNum);
+                            inidown2Index = inidown2.length;
+                        }
+                    }
 
                     //  上升底下抖动
                     if (i >= starPoint2 && i < starPoint2 + dou1) {
@@ -556,10 +563,10 @@
                         cright2Index = cright2Index - 1;
                         randNum = cright2[cright2Index];
                     }
-                    // if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                    //     inidown2Index = inidown2Index - 1;
-                    //     randNum = inidown2[inidown2Index]
-                    // }
+                    if (i > starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint2 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + 15) {
+                        inidown2Index = inidown2Index - 1;
+                        randNum = inidown2[inidown2Index]
+                    }
                 }
 
                 //生成点3
@@ -571,27 +578,27 @@
                     //顶部固定200k/30个点
                     var dou3 = 10
                     var dou4 = 5
-                    // if (i >= starPoint3 - dou1 * 2 && i < starPoint3) {
-                    //     if (starPoint3 < centerPint2 + 30 + 60) {
-                    //         iniup3 = iniup3 + 0.5;
-                    //         var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                    //         if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                    //             tmp = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
-                    //         }
-                    //         cleft3 = iniup3;
-                    //         inidown3.push(tmp);
-                    //         inidown3Index = inidown3.length;
-                    //     } else {
-                    //         iniup3 = iniup3 + 0.5;
-                    //         randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
-                    //         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
-                    //             randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
-                    //         }
-                    //         cleft3 = iniup3;
-                    //         inidown3.push(randNum);
-                    //         inidown3Index = inidown3.length;
-                    //     }
-                    // }
+                    if (i >= starPoint3 - 15 && i < starPoint3) {
+                        if (starPoint3 < centerPint2 + 30 + 60) {
+                            iniup3 = iniup3 + 0.5;
+                            var tmp = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                            if (tmp >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                                tmp = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                            }
+                            cleft3 = iniup3;
+                            inidown3.push(tmp);
+                            inidown3Index = inidown3.length;
+                        } else {
+                            iniup3 = iniup3 + 0.5;
+                            randNum = generateRandomInteger(init - int_val, init + int_val) + iniup3
+                            if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark3 - init) * 0.33 / dou1) {
+                                randNum = generateRandomInteger(init - int_val, init) + iniup3 - 0.5
+                            }
+                            cleft3 = iniup3;
+                            inidown3.push(randNum);
+                            inidown3Index = inidown3.length;
+                        }
+                    }
                     //  上升底下抖动
                     if (i >= starPoint3 && i < starPoint3 + dou1) {
                         cleft3 = cleft3 + (mark3 - init) * 0.15 / dou1
@@ -645,10 +652,10 @@
                         cright3Index = cright3Index - 1;
                         randNum = cright3[cright3Index];
                     }
-                    // if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + dou1 * 2) {
-                    //     inidown3Index = inidown3Index - 1;
-                    //     randNum = inidown3[inidown3Index]
-                    // }
+                    if (i > starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint3 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + 15) {
+                        inidown3Index = inidown3Index - 1;
+                        randNum = inidown3[inidown3Index]
+                    }
                 }
                 if(randNum == undefined){
                     randNum = generateRandomInteger(init - int_val, init + int_val)
