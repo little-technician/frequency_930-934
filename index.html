@@ -250,6 +250,100 @@
                     <label for="bottom_width3_label">底部两边宽度，默认值15</label>
                 </div>
             </div>
+
+            <div style="margin-top: 20px">
+                <div class="input-wrapper">
+
+                    <input type="text" id="M4_db" size="18" placeholder=" " />
+                    <label for="M4">M4_dB：</label>
+                </div>
+                <div class="input-wrapper">
+
+                    <input type="text" id="M4_i" size="18" placeholder=" " />
+                    <label for="M4">开始位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M4_c" size="18" placeholder=" " />
+                    <label for="M4">中心位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M4_updownini" size="18" placeholder=" " />
+                    <label for="M4">上升下降曲线参数1,默认值为3</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M4_updown" size="18" placeholder=" " />
+                    <label for="M4">上升下降曲线参2,默认值为3</label>
+                </div>
+                <dvi>
+                    <select class="select" id="mySelect4">
+                        <option value="s1">峰值出现在位置1</option>
+                        <option value="s2">峰值出现在位置2</option>
+                        <option value="s3">峰值出现在位置3</option>
+                    </select>
+                </dvi>
+                <dvi>
+                    <select class="select" id="mySelectWidth4">
+                        <option value="topWidth1">顶峰宽度:20</option>
+                        <option value="topWidth2">顶峰宽度:30</option>
+                    </select>
+                </dvi>
+                <div class="input-wrapper">
+                    <input type="text" id="bottom_width4" size="18" placeholder=" " />
+                    <label for="bottom_width4_label">底部两边宽度，默认值15</label>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px">
+                <div class="input-wrapper">
+
+                    <input type="text" id="M5_db" size="18" placeholder=" " />
+                    <label for="M4">M5_dB：</label>
+                </div>
+                <div class="input-wrapper">
+
+                    <input type="text" id="M5_i" size="18" placeholder=" " />
+                    <label for="M5">开始位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M5_c" size="18" placeholder=" " />
+                    <label for="M5">中心位置</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M5_updownini" size="18" placeholder=" " />
+                    <label for="M5">上升下降曲线参数1,默认值为3</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="M5_updown" size="18" placeholder=" " />
+                    <label for="M5">上升下降曲线参2,默认值为3</label>
+                </div>
+                <dvi>
+                    <select class="select" id="mySelect5">
+                        <option value="s1">峰值出现在位置1</option>
+                        <option value="s2">峰值出现在位置2</option>
+                        <option value="s3">峰值出现在位置3</option>
+                    </select>
+                </dvi>
+                <dvi>
+                    <select class="select" id="mySelectWidth5">
+                        <option value="topWidth1">顶峰宽度:20</option>
+                        <option value="topWidth2">顶峰宽度:30</option>
+                    </select>
+                </dvi>
+                <div class="input-wrapper">
+                    <input type="text" id="bottom_width5" size="18" placeholder=" " />
+                    <label for="bottom_width5_label">底部两边宽度，默认值15</label>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
             <button type="button" value="生成频谱图" name="生成频谱图" id="test_button" class="button"
                 style="margin-top: 20px">生成频谱图</button>
             <button type="button" value="导出频谱图" name="生成频谱图" id="export_button" class="button"
@@ -317,46 +411,84 @@
         var mark1 = 0;
         var mark2 = 0;
         var mark3 = 0;
+        var mark4 = 0;
+        var mark5 = 0;
+
         var starPoint1 = 0;
         var starPoint2 = 0
         var starPoint3 = 0
+        var starPoint4 = 0
+        var starPoint5 = 0
+
         var centerPint1 = null;
         var centerPint2 = null;
         var centerPint3 = null;
+        var centerPint4 = null;
+        var centerPint5 = null;
+
         var M1_updown = 0;
         var M2_updown = 0;
         var M3_updown = 0;
+        var M4_updown = 0;
+        var M5_updown = 0;
+
         var M1_updownini = 0;
         var M2_updownini = 0;
         var M3_updownini = 0;
+        var M4_updownini = 0;
+        var M5_updownini = 0;
+
         var bottom_width1 = 15;
         var bottom_width2 = 15;
         var bottom_width3 = 15;
+        var bottom_width4 = 15;
+        var bottom_width5 = 15;
+
         document.getElementById('test_button').addEventListener('click', function () {
             // 使用刚指定的配置项和数据显示图表。
             mark1 = parseFloat(document.getElementById("M1_db").value) == undefined ? 0 : parseFloat(document.getElementById("M1_db").value);
             mark2 = parseFloat(document.getElementById("M2_db").value) == undefined ? 0 : parseFloat(document.getElementById("M2_db").value);
             mark3 = parseFloat(document.getElementById("M3_db").value) == undefined ? 0 : parseFloat(document.getElementById("M3_db").value);
+            mark4 = parseFloat(document.getElementById("M4_db").value) == undefined ? 0 : parseFloat(document.getElementById("M4_db").value);
+            mark5 = parseFloat(document.getElementById("M5_db").value) == undefined ? 0 : parseFloat(document.getElementById("M5_db").value);
+
             starPoint1 = parseFloat(document.getElementById("M1_i").value) == undefined ? 0 : parseFloat(document.getElementById("M1_i").value);
             starPoint2 = parseFloat(document.getElementById("M2_i").value) == undefined ? 0 : parseFloat(document.getElementById("M2_i").value);
             starPoint3 = parseFloat(document.getElementById("M3_i").value) == undefined ? 0 : parseFloat(document.getElementById("M3_i").value);
+            starPoint4 = parseFloat(document.getElementById("M4_i").value) == undefined ? 0 : parseFloat(document.getElementById("M4_i").value);
+            starPoint5 = parseFloat(document.getElementById("M5_i").value) == undefined ? 0 : parseFloat(document.getElementById("M5_i").value);
+
             centerPint1 = parseFloat(document.getElementById("M1_c").value) == undefined ? 0 : parseFloat(document.getElementById("M1_c").value);
             centerPint2 = parseFloat(document.getElementById("M2_c").value) == undefined ? 0 : parseFloat(document.getElementById("M2_c").value);
             centerPint3 = parseFloat(document.getElementById("M3_c").value) == undefined ? 0 : parseFloat(document.getElementById("M3_c").value);
+            centerPint4 = parseFloat(document.getElementById("M4_c").value) == undefined ? 0 : parseFloat(document.getElementById("M4_c").value);
+            centerPint5 = parseFloat(document.getElementById("M5_c").value) == undefined ? 0 : parseFloat(document.getElementById("M5_c").value);
+
             M1_updown = parseFloat(document.getElementById("M1_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updown").value)) ? 3 : parseFloat(document.getElementById("M1_updown").value);
             M2_updown = parseFloat(document.getElementById("M2_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updown").value)) ? 3 : parseFloat(document.getElementById("M2_updown").value);
             M3_updown = parseFloat(document.getElementById("M3_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updown").value)) ? 3 : parseFloat(document.getElementById("M3_updown").value);
+            M4_updown = parseFloat(document.getElementById("M4_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M4_updown").value)) ? 3 : parseFloat(document.getElementById("M4_updown").value);
+            M5_updown = parseFloat(document.getElementById("M5_updown").value) == undefined || isNaN(parseFloat(document.getElementById("M5_updown").value)) ? 3 : parseFloat(document.getElementById("M5_updown").value);
+
             M1_updownini = parseFloat(document.getElementById("M1_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M1_updownini").value)) ? 3 : parseFloat(document.getElementById("M1_updownini").value);
             M2_updownini = parseFloat(document.getElementById("M2_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M2_updownini").value)) ? 3 : parseFloat(document.getElementById("M2_updownini").value);
             M3_updownini = parseFloat(document.getElementById("M3_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M3_updownini").value)) ? 3 : parseFloat(document.getElementById("M3_updownini").value);
+            M4_updownini = parseFloat(document.getElementById("M4_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M4_updownini").value)) ? 3 : parseFloat(document.getElementById("M4_updownini").value);
+            M5_updownini = parseFloat(document.getElementById("M5_updownini").value) == undefined || isNaN(parseFloat(document.getElementById("M5_updownini").value)) ? 3 : parseFloat(document.getElementById("M5_updownini").value);
+
             init = parseFloat(document.getElementById("init_fr").value) == undefined || isNaN(parseFloat(document.getElementById("init_fr").value)) ? -105 : parseFloat(document.getElementById("init_fr").value);
             StartFrequency = parseFloat(document.getElementById("StartFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StartFrequency").value)) ? 930.000000 : parseFloat(document.getElementById("StartFrequency").value).toFixed(6);
             StopFrequency = parseFloat(document.getElementById("StopFrequency").value) == undefined || isNaN(parseFloat(document.getElementById("StopFrequency").value)) ? 934.000000 : parseFloat(document.getElementById("StopFrequency").value).toFixed(6);
             generate();
             init_fr_radom = parseFloat(document.getElementById("init_fr_radom").value) == undefined || isNaN(parseFloat(document.getElementById("init_fr_radom").value)) ? 0.75 : parseFloat(document.getElementById("init_fr_radom").value);
+
+
+
             bottom_width1 = parseFloat(document.getElementById("bottom_width1").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width1").value)) ? 15 : parseFloat(document.getElementById("bottom_width1").value);
             bottom_width2 = parseFloat(document.getElementById("bottom_width2").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width2").value)) ? 15 : parseFloat(document.getElementById("bottom_width2").value);
             bottom_width3 = parseFloat(document.getElementById("bottom_width3").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width3").value)) ? 15 : parseFloat(document.getElementById("bottom_width3").value);
+            bottom_width4 = parseFloat(document.getElementById("bottom_width4").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width4").value)) ? 15 : parseFloat(document.getElementById("bottom_width4").value);
+            bottom_width5 = parseFloat(document.getElementById("bottom_width5").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width5").value)) ? 15 : parseFloat(document.getElementById("bottom_width5").value);
         }, false);
         generate();
         document.getElementById('export_button').addEventListener('click', function () {
@@ -402,34 +534,54 @@
             var left1 = 0;
             var left2 = 0;
             var left3 = 0;
+            var left4 = 0;
+            var left5 = 0;
             var iniup1 = 0;
             var iniup2 = 0;
             var iniup3 = 0;
+            var iniup4 = 0;
+            var iniup5 = 0;
             var cleft1 = 0;
             var cleft2 = 0;
             var cleft3 = 0;
+            var cleft4 = 0;
+            var cleft5 = 0;
 
             //下降波形数组，用于对称
             var right1 = [];
             var right2 = [];
             var right3 = [];
+            var right4 = [];
+            var right5 = [];
             var inidown1 = [];
             var inidown2 = [];
             var inidown3 = [];
+            var inidown4 = [];
+            var inidown5 = [];
             var cright1 = [];
             var cright2 = [];
             var cright3 = [];
+            var cright4 = [];
+            var cright5 = [];
 
             // 下降波形数组索引，用于从数组末尾开始检索，用于对称
             var right1Index = 0;
             var right2Index = 0;
             var right3Index = 0;
+            var right4Index = 0;
+            var right5Index = 0;
+
             var cright1Index = 0;
             var cright2Index = 0;
             var cright3Index = 0;
+            var cright4Index = 0;
+            var cright5Index = 0;
+
             var inidown1Index = 0;
             var inidown2Index = 0;
             var inidown3Index = 0;
+            var inidown4Index = 0;
+            var inidown5Index = 0;
 
 
             var topNum = 2
@@ -727,7 +879,180 @@
                 }
 
                 //生成点4
+                if (starPoint4 >= 0 && mark4 != 0) {
+                    if (document.getElementById("mySelectWidth1").value === "topWidth1") {
+                        var dou1 = (centerPint4 - starPoint4 - 10) * 0.5
+                        var dou2 = (centerPint4 - starPoint4 - 10) * 0.5
+                        // var dou3 = (centerPint4 - starPoint4) * 0.3
+                        // var dou4 = (centerPint4 - starPoint4) * 0.2
+                        //顶部固定200k/30个点
+                        var dou3 = 5
+                        var dou4 = 5
+                    } else {
+                        var dou1 = (centerPint4 - starPoint4 - 15) * 0.5
+                        var dou2 = (centerPint4 - starPoint4 - 15) * 0.5
+                        // var dou3 = (centerPint4 - starPoint4) * 0.3
+                        // var dou4 = (centerPint4 - starPoint4) * 0.2
+                        //顶部固定200k/30个点
+                        var dou3 = 10
+                        var dou4 = 5
+                    }
+                    if (i >= starPoint4 - bottom_width4 && i < starPoint4) {
+                        iniup4 = iniup4 + 0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup4
+                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark4 - init) * 0.33 / dou1) {
+                            randNum = generateRandomInteger(init - int_val, init) + iniup4 - 0.5
+                        }
+                        cleft4 = iniup4;
+                        inidown4.push(randNum);
+                        inidown4Index = inidown4.length;
+                    }
+                    //  上升底下抖动
+                    if (i >= starPoint4 && i < starPoint4 + dou1) {
+                        cleft4 = cleft4 + (mark4 - init) * 0.15 / dou1
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft4
+                        left4 = cleft4 - M4_updownini
+                        cright4.push(randNum);
+                        cright4Index = cright4.length;
+
+                    }
+                    //上升波形
+                    if (i >= starPoint4 + dou1 && i < starPoint4 + dou1 + dou2) {
+                        left4 = left4 + (mark4 - init) * 0.625 / dou2
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + left4
+                        if (i % 2 === 0 && right4Index > 2) {
+                            randNum = randNum - M4_updown
+                        }
+                        right4.push(randNum);
+                        right4Index = right4.length;
+                    }
+                    //上升波峰抖动波形
+                    if (i >= starPoint4 + dou1 + dou2 && i < starPoint4 + dou1 + dou2 + dou3) {
+                        randNum = generateRandomInteger(mark4 - int_val1 - 1, mark4)
+                        if (document.getElementById("mySelect4").value === "s1") {
+                            randNum = generateRandomInteger(mark4 - int_val1, mark4 + topNum)
+                        }
+                    }
+                    //峰值出现波形
+                    if (i >= starPoint4 + dou1 + dou2 + dou3 && i <= starPoint4 + dou1 + dou2 + dou3 + dou4 * 2) {
+                        randNum = generateRandomInteger(mark4 - int_val1 - 1, mark4)
+                        if (document.getElementById("mySelect4").value === "s2") {
+                            randNum = generateRandomInteger(mark4 - int_val1, mark4 + topNum)
+                        }
+                    }
+
+                    //下降波峰抖动波形
+                    if (i > starPoint4 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint4 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
+                        randNum = generateRandomInteger(mark4 - int_val1 - 1, mark4)
+                        if (document.getElementById("mySelect4").value === "s3") {
+                            randNum = generateRandomInteger(mark4 - int_val1, mark4 + topNum)
+                        }
+                        // right4 = 7
+                    }
+
+                    //下降波形
+                    if (i > starPoint4 + dou1 + dou2 + dou3 * 2 + dou4 * 2 && i <= starPoint4 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
+                        right4Index = right4Index - 1;
+                        randNum = right4[right4Index];
+                    }
+                    //底下抖动
+                    if (i > starPoint4 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint4 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
+                        cright4Index = cright4Index - 1;
+                        randNum = cright4[cright4Index];
+                    }
+                    if (i > starPoint4 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint4 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width4) {
+                        inidown4Index = inidown4Index - 1;
+                        randNum = inidown4[inidown4Index]
+                    }
+                }
+
                 //生成点5
+                if (starPoint5 >= 0 && mark5 != 0) {
+                    if (document.getElementById("mySelectWidth1").value === "topWidth1") {
+                        var dou1 = (centerPint5 - starPoint5 - 10) * 0.5
+                        var dou2 = (centerPint5 - starPoint5 - 10) * 0.5
+                        // var dou3 = (centerPint5 - starPoint5) * 0.3
+                        // var dou4 = (centerPint5 - starPoint5) * 0.2
+                        //顶部固定200k/30个点
+                        var dou3 = 5
+                        var dou4 = 5
+                    } else {
+                        var dou1 = (centerPint5 - starPoint5 - 15) * 0.5
+                        var dou2 = (centerPint5 - starPoint5 - 15) * 0.5
+                        // var dou3 = (centerPint5 - starPoint5) * 0.3
+                        // var dou4 = (centerPint5 - starPoint5) * 0.2
+                        //顶部固定200k/30个点
+                        var dou3 = 10
+                        var dou4 = 5
+                    }
+                    if (i >= starPoint5 - bottom_width5 && i < starPoint5) {
+                        iniup5 = iniup5 + 0.5;
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + iniup5
+                        if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark5 - init) * 0.33 / dou1) {
+                            randNum = generateRandomInteger(init - int_val, init) + iniup5 - 0.5
+                        }
+                        cleft5 = iniup5;
+                        inidown5.push(randNum);
+                        inidown5Index = inidown5.length;
+                    }
+                    //  上升底下抖动
+                    if (i >= starPoint5 && i < starPoint5 + dou1) {
+                        cleft5 = cleft5 + (mark5 - init) * 0.15 / dou1
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + cleft5
+                        left5 = cleft5 - M5_updownini
+                        cright5.push(randNum);
+                        cright5Index = cright5.length;
+
+                    }
+                    //上升波形
+                    if (i >= starPoint5 + dou1 && i < starPoint5 + dou1 + dou2) {
+                        left5 = left5 + (mark5 - init) * 0.625 / dou2
+                        randNum = generateRandomInteger(init - int_val, init + int_val) + left5
+                        if (i % 2 === 0 && right5Index > 2) {
+                            randNum = randNum - M5_updown
+                        }
+                        right5.push(randNum);
+                        right5Index = right5.length;
+                    }
+                    //上升波峰抖动波形
+                    if (i >= starPoint5 + dou1 + dou2 && i < starPoint5 + dou1 + dou2 + dou3) {
+                        randNum = generateRandomInteger(mark5 - int_val1 - 1, mark5)
+                        if (document.getElementById("mySelect5").value === "s1") {
+                            randNum = generateRandomInteger(mark5 - int_val1, mark5 + topNum)
+                        }
+                    }
+                    //峰值出现波形
+                    if (i >= starPoint5 + dou1 + dou2 + dou3 && i <= starPoint5 + dou1 + dou2 + dou3 + dou4 * 2) {
+                        randNum = generateRandomInteger(mark5 - int_val1 - 1, mark5)
+                        if (document.getElementById("mySelect5").value === "s2") {
+                            randNum = generateRandomInteger(mark5 - int_val1, mark5 + topNum)
+                        }
+                    }
+
+                    //下降波峰抖动波形
+                    if (i > starPoint5 + dou1 + dou2 + dou3 + dou4 * 2 && i <= starPoint5 + dou1 + dou2 + dou3 * 2 + dou4 * 2) {
+                        randNum = generateRandomInteger(mark5 - int_val1 - 1, mark5)
+                        if (document.getElementById("mySelect5").value === "s3") {
+                            randNum = generateRandomInteger(mark5 - int_val1, mark5 + topNum)
+                        }
+                        // right5 = 7
+                    }
+
+                    //下降波形
+                    if (i > starPoint5 + dou1 + dou2 + dou3 * 2 + dou4 * 2 && i <= starPoint5 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
+                        right5Index = right5Index - 1;
+                        randNum = right5[right5Index];
+                    }
+                    //底下抖动
+                    if (i > starPoint5 + dou1 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint5 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2) {
+                        cright5Index = cright5Index - 1;
+                        randNum = cright5[cright5Index];
+                    }
+                    if (i > starPoint5 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint5 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width5) {
+                        inidown5Index = inidown5Index - 1;
+                        randNum = inidown5[inidown5Index]
+                    }
+                }
 
 
 
@@ -1237,6 +1562,34 @@
                                     },
                                     itemStyle: { color: '#ffffff' }
                                 },
+                                {
+                                    coord: ['' + x_data[centerPint4], '' + y_data[centerPint4]],
+                                    value: '4',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#ffffff',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#ffffff' }
+                                },
+                                {
+                                    coord: ['' + x_data[centerPint5], '' + y_data[centerPint5]],
+                                    value: '5',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#ffffff',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#ffffff' }
+                                },
                             ],
                         },
                     }
@@ -1338,6 +1691,78 @@
                     top: '43',
                     right: '10',
                     text: y_data[centerPint3].toFixed(2) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option.title.push(title_m)
+                option.title.push(title_db)
+            }
+            if (centerPint4 >= 0 && mark4 != 0) {
+                var title_m = {
+                    top: '64',
+                    right: '260',
+                    text: 'M4:' + x_data[centerPint4].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '64',
+                    right: '10',
+                    text: y_data[centerPint4].toFixed(2) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option.title.push(title_m)
+                option.title.push(title_db)
+            }
+            if (centerPint5 >= 0 && mark5 != 0) {
+                var title_m = {
+                    top: '85',
+                    right: '260',
+                    text: 'M5:' + x_data[centerPint5].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#ffffff',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '85',
+                    right: '10',
+                    text: y_data[centerPint5].toFixed(2) + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#ffffff',
@@ -1854,6 +2279,34 @@
                                     },
                                     itemStyle: { color: '#000000' }
                                 },
+                                {
+                                    coord: ['' + x_data[centerPint4], '' + y_data[centerPint4]],
+                                    value: '4',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#000000',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#000000' }
+                                },
+                                {
+                                    coord: ['' + x_data[centerPint5], '' + y_data[centerPint5]],
+                                    value: '5',
+                                    symbol: "circle",
+                                    symbolSize: 5,
+                                    animation: true,
+                                    label: {
+                                        offset: [0, -10],
+                                        show: true,
+                                        color: '#000000',
+                                        fontSize: 23
+                                    },
+                                    itemStyle: { color: '#000000' }
+                                },
                             ],
                         },
                     }
@@ -1953,6 +2406,78 @@
                     top: '43',
                     right: '10',
                     text: y_data[centerPint3].toFixed(2) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#000000',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option2.title.push(title_m)
+                option2.title.push(title_db)
+            }
+            if (centerPint4 >= 0 && mark4 != 0) {
+                var title_m = {
+                    top: '64',
+                    right: '260',
+                    text: 'M4:' + x_data[centerPint4].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#000000',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '64',
+                    right: '10',
+                    text: y_data[centerPint4].toFixed(2) + 'dBm',
+                    textStyle: {
+                        //文字颜色
+                        color: '#000000',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                option2.title.push(title_m)
+                option2.title.push(title_db)
+            }
+            if (centerPint5 >= 0 && mark5 != 0) {
+                var title_m = {
+                    top: '85',
+                    right: '260',
+                    text: 'M5:' + x_data[centerPint5].toFixed(2) + ' MHz',
+                    textStyle: {
+                        //文字颜色
+                        color: '#000000',
+                        //字体风格,'normal','italic','oblique'
+                        fontStyle: 'normal',
+                        //字体粗细 'normal','bold','bolder','lighter',100 | 200 | 300 | 400...
+                        fontWeight: 'normal',
+                        //字体系列
+                        fontFamily: 'UniFont',
+                        fontSize: 23
+                    }
+                }
+                var title_db = {
+                    top: '85',
+                    right: '10',
+                    text: y_data[centerPint5].toFixed(2) + 'dBm',
                     textStyle: {
                         //文字颜色
                         color: '#000000',
