@@ -130,6 +130,10 @@
                     <input type="text" id="StopFrequency" size="18" placeholder=" " />
                     <label for="StopFrequency_label">结束频率：，默认934</label>
                 </div>
+                <div class="input-wrapper">
+                    <input type="text" id="offset" size="18" placeholder=" " />
+                    <label for="offset_label">整体向左偏移量,默认为0</label>
+                </div>
             </div>
             <div style="margin-top: 20px">
                 <div class="input-wrapper">
@@ -444,6 +448,8 @@
         var bottom_width4 = 15;
         var bottom_width5 = 15;
 
+        var offset = 0;
+
         document.getElementById('test_button').addEventListener('click', function () {
             // 使用刚指定的配置项和数据显示图表。
             mark1 = parseFloat(document.getElementById("M1_db").value) == undefined ? 0 : parseFloat(document.getElementById("M1_db").value);
@@ -489,6 +495,8 @@
             bottom_width3 = parseFloat(document.getElementById("bottom_width3").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width3").value)) ? 15 : parseFloat(document.getElementById("bottom_width3").value);
             bottom_width4 = parseFloat(document.getElementById("bottom_width4").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width4").value)) ? 15 : parseFloat(document.getElementById("bottom_width4").value);
             bottom_width5 = parseFloat(document.getElementById("bottom_width5").value) == undefined || isNaN(parseFloat(document.getElementById("bottom_width5").value)) ? 15 : parseFloat(document.getElementById("bottom_width5").value);
+
+            offset = parseFloat(document.getElementById("offset").value) == undefined || isNaN(parseFloat(document.getElementById("offset").value)) ? 0 : parseFloat(document.getElementById("offset").value);
         }, false);
         generate();
         document.getElementById('export_button').addEventListener('click', function () {
@@ -524,12 +532,12 @@
             for (var i = 0; i < xy; i++) {
                 x_data.push(parseFloat(StartFrequency) + i * ((parseFloat(StopFrequency) - parseFloat(StartFrequency)) / xy))
             }
-            console.log(StartFrequency, StopFrequency)
-            console.log(x_data)
+            // console.log(StartFrequency, StopFrequency)
+            // console.log(x_data)
             var y_data = [];
             var int_val = init_fr_radom;
             var int_val1 = 3;
-            console.log(int_val)
+            // console.log(int_val)
             // 上升波形控制数值
             var left1 = 0;
             var left2 = 0;
@@ -585,7 +593,9 @@
 
 
             var topNum = 2
-            for (var i = 0; i < xy; i++) {
+            // var flag1 = true;
+
+            for (var i = 0; i < xy+offset; i++) {
                 var randNum = generateRandomInteger(init - int_val, init + int_val)
                 //生成点1
                 if (starPoint1 >= 0 && mark1 != 0) {
@@ -606,7 +616,7 @@
                         var dou3 = 10
                         var dou4 = 5
                     }
-                    if (i >= starPoint1 - bottom_width1 && i < starPoint1) {
+                    if (i >= starPoint1 - bottom_width1 && i <= starPoint1) {
                         iniup1 = iniup1 + 0.5;
                         randNum = generateRandomInteger(init - int_val, init + int_val) + iniup1
                         if (randNum >= generateRandomInteger(init - int_val, init + int_val) + (mark1 - init) * 0.33 / dou1) {
@@ -672,6 +682,23 @@
                     if (i > starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 && i <= starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width1) {
                         inidown1Index = inidown1Index - 1;
                         randNum = inidown1[inidown1Index]
+                        // console.log("test222222",y_data)s
+                        // if(starPoint1 == 0 && i== starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width1 && flag1 == true ){
+                        //     var temp_data = y_data.slice();
+                        //     var temp_data
+                        //     for(var j = 0;j <  starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width1;j++){
+                        //         if(temp_data[j+offset1-1] != undefined){
+                        //             y_data[j] = temp_data[j+offset1-1]
+                        //         }else{
+                        //             y_data[j] = generateRandomInteger(init - int_val, init + int_val)
+                        //         }
+                        //     }
+                        //     // y_data.splice(starPoint1 + dou1 * 2 + dou2 * 2 + dou3 * 2 + dou4 * 2 + bottom_width1-offset1,offset1)
+                        //     console.log("test333333",y_data)
+                        //     centerPint1 = centerPint1 - offset1
+                        //     flag1 = false;
+                        //     console.log("test11111",y_data)
+                        // }
                     }
                 }
 
@@ -874,9 +901,7 @@
                         randNum = inidown3[inidown3Index]
                     }
                 }
-                if (randNum == undefined) {
-                    randNum = generateRandomInteger(init - int_val, init + int_val)
-                }
+                
 
                 //生成点4
                 if (starPoint4 >= 0 && mark4 != 0) {
@@ -1054,14 +1079,29 @@
                     }
                 }
 
-
-
-
-
+                if (randNum == undefined) {
+                    randNum = generateRandomInteger(init - int_val, init + int_val)
+                }
 
                 y_data.push(randNum);
-                console.log(y_data)
+
             }
+            console.log(y_data)
+            //整体偏移
+            var temp_data = y_data.slice();
+            for(var j = 0;j <temp_data.length;j++){
+                if(temp_data[j+offset-1] != undefined){
+                    y_data[j] = temp_data[j+offset-1]
+                }else{
+                    y_data[j] = generateRandomInteger(init - int_val, init + int_val)
+                }
+            }
+            y_data.splice(y_data.length-offset,offset)
+            centerPint1 = centerPint1 - offset
+            centerPint2 = centerPint2 - offset
+            centerPint3 = centerPint3 - offset
+            centerPint4 = centerPint4 - offset
+            centerPint5 = centerPint5 - offset
 
             //正常
             option = {
